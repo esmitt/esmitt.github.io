@@ -35,7 +35,7 @@
 										</header>
 										<p>I am a Barcelona-based freelancer tech leader. As part of my personal brand, esmittcode is a way to spread the knowledge in Computer Science using social networks with few sentences, from the basic to more complex concepts, news and hot topics on this area. Now, let me state two important things: 1) posts and stories have some comedy (Why? Because in my opinion the comedy is critical for life) and 2) posts are in Spanish (I know, I know... but thanks to Instagram for translating text option).</p>
 										<ul class="actions">
-											<li><a href="esmittcode.html" class="button big">Learn More</a></li>
+											<li><a href="projects.html" class="button big">Learn More</a></li>
 										</ul>
 									</div>
 									<span class="image object">
@@ -168,10 +168,8 @@
 								<footer id="footer">
 									<p class="copyright">&copy; esmitt. All rights reserved? Images illustrations: <a href="https://undraw.co">Undraw</a>. Design: <a href="https://html5up.net">HTML5 UP</a>.</p>
 								</footer>
-
 						</div>
 					</div>
-
 			</div>
 
 		<!-- Scripts -->
@@ -190,9 +188,10 @@
 					var description = el.find("description").text();
 					const truncate = (input) => input.length > 150 ? `${input.substring(0, 150)}...` : input;
 					title = truncate(title.replace('Caption: ',''));
-					$('#instafeed').append('<article><a href="'+encodeURI(link)+'" class="image" target="_blank"><img src="'+encodeURI(image)+'"/></a><p>'+title+'</p></article>');
+					// $('#instafeed').append('<article><a class="image" href="'+encodeURI(link)+'" target="_blank"><img src="'+encodeURI(image)+'" alt=""></a><p>'+title+'</p></article>');
+					$('#instafeed').append('<article><a class="image fit" href="'+encodeURI(link)+'" target="_blank"><img src="'+encodeURI(image)+'" alt=""></a><p>'+title+'</p></article>');
 				});
 			});
-			</script>			
+			</script>
 	</body>
 </html>
