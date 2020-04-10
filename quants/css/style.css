@@ -13,7 +13,7 @@ body{
 }
 .top{
     display: none;
-    background: rgb(244, 162, 9);
+    background: rgb(231, 111, 81);
     color: #fff;
     padding: 5px 10px;
     font-size: 22px;
@@ -27,7 +27,7 @@ body{
     transition: 2s;
 }
 .top:hover{
-    background: rgb(42, 157, 14);
+    background: rgb(38, 70, 83);
 }
 h1{
 	font-weight: 100;
@@ -80,7 +80,7 @@ HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH*/
 	top: 0;
 	left: 0;
     z-index: 9999;
-	background: linear-gradient(50deg, rgb(244, 162, 9), rgb(42, 157, 14));
+	background: linear-gradient(50deg, rgb(231, 111, 81), rgb(38, 70, 83));
 }
 .overlay .overlay-close {
     width: 50px;
@@ -183,7 +183,7 @@ HH				Header
 HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH*/
 .header{
 	height: 100vh;
-	background: linear-gradient(50deg, rgb(244, 162, 9), rgb(42, 157, 14));
+	background: linear-gradient(50deg, rgb(231, 111, 81), rgb(38, 70, 83));
     padding: 45px 0px;
 }
 #logo {
@@ -209,7 +209,7 @@ a#logo:hover{
 }
 .fixed {
     position: fixed;
-    background: rgb(42, 157, 14);
+    background: rgb(38, 70, 83);
     top: 0;
     z-index: 99;
     transition: 1s;
@@ -238,7 +238,7 @@ a#logo:hover{
 	padding: 0px 12px;
 }
 .nav-button button:hover{
-	color: rgb(42, 157, 14);
+	color: rgb(38, 70, 83);
 	background-color: white;
 }
 .navbar-white {
@@ -573,13 +573,13 @@ HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH*/
     line-height: 0;
     border: 2px solid;
     border-radius: 100%;
-    color: rgb(42, 157, 14);
+    color: rgb(38, 70, 83);
     padding: 6px 9px;
 }
 .gallery-nav:hover,.gallery-nav:focus,.gallery-nav:active {
     color:#fff;
-    background: rgb(42, 157, 14);
-    border-color: rgb(42, 157, 14);
+    background: rgb(38, 70, 83);
+    border-color: rgb(38, 70, 83);
 }
 .customNavigation{
     top: 40%;
@@ -673,7 +673,7 @@ ul.social-icon li a {
 HH 				Testimonial
 HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH*/
 #testimonial{
-	background: linear-gradient(50deg, rgb(244, 162, 9), rgb(42, 157, 14));
+	background: linear-gradient(50deg, rgb(231, 111, 81), rgb(38, 70, 83));
     color: white;
     padding: 100px 0px;
     /*position: relative;*/
@@ -730,7 +730,7 @@ HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH*/
 #pricing{
     position: relative;
     height: 100%;
-    background: linear-gradient(50deg, rgb(244, 162, 9), rgb(42, 157, 14));
+    background: linear-gradient(50deg, rgb(231, 111, 81), rgb(38, 70, 83));
 }
 ul.pricing-table {
     display:block;
@@ -883,7 +883,7 @@ HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH*/
     background-color: #39c;
     transition: .8s;
     border: 2px solid #e7e7e7 !important;
-    /*background: linear-gradient(90deg, rgb(244, 162, 9), rgb(42, 157, 14));*/
+    /*background: linear-gradient(90deg, rgb(231, 111, 81), rgb(38, 70, 83));*/
 }
 .contact{
     font-size: 15px;
@@ -901,22 +901,22 @@ HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH*/
     height: 50px;
     border-radius: 0px;
     color: white;
-    background-color: rgb(42, 157, 14);
+    background-color: rgb(38, 70, 83);
     padding: 15px 10px;
     margin: 10px 30px;
-    border-color: rgb(42, 157, 14);
+    border-color: rgb(38, 70, 83);
     margin-bottom: 45px;
     text-transform: uppercase;
     font-weight: 700;
 }
 .btn-sub:hover{
-    background-color: rgb(244, 162, 9);
-    border-color: rgb(244, 162, 9);
+    background-color: rgb(231, 111, 81);
+    border-color: rgb(231, 111, 81);
     color: white;
     transition: .8s;
 }
 input[type="username"]:focus, input[type="email"]:focus, input[type="text"]:focus{
-    border-color: rgb(244, 162, 9);
+    border-color: rgb(231, 111, 81);
     box-shadow: none;
 }
 input.form-control, .message {
@@ -927,7 +927,7 @@ HH              Footer Section
 HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH*/
 
 #footer {
-    /*background: linear-gradient(180deg, rgb(0, 190, 111), rgb(42, 157, 14));*/
+    /*background: linear-gradient(180deg, rgb(0, 190, 111), rgb(38, 70, 83));*/
     background-color: #39c;
     color:white;
     padding:40px 0;
