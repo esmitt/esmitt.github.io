@@ -13,7 +13,7 @@ body{
 }
 .top{
     display: none;
-    background: rgb(231, 111, 81);
+    background: rgb(42, 157, 143);
     color: #fff;
     padding: 5px 10px;
     font-size: 22px;
@@ -80,7 +80,7 @@ HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH*/
 	top: 0;
 	left: 0;
     z-index: 9999;
-	background: linear-gradient(50deg, rgb(231, 111, 81), rgb(38, 70, 83));
+	background: linear-gradient(50deg, rgb(42, 157, 143), rgb(38, 70, 83));
 }
 .overlay .overlay-close {
     width: 50px;
@@ -183,7 +183,7 @@ HH				Header
 HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH*/
 .header{
 	height: 100vh;
-	background: linear-gradient(50deg, rgb(231, 111, 81), rgb(38, 70, 83));
+	background: linear-gradient(50deg, rgb(42, 157, 143), rgb(38, 70, 83));
     padding: 45px 0px;
 }
 #logo {
@@ -673,7 +673,7 @@ ul.social-icon li a {
 HH 				Testimonial
 HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH*/
 #testimonial{
-	background: linear-gradient(50deg, rgb(231, 111, 81), rgb(38, 70, 83));
+	background: linear-gradient(50deg, rgb(42, 157, 143), rgb(38, 70, 83));
     color: white;
     padding: 100px 0px;
     /*position: relative;*/
@@ -730,7 +730,7 @@ HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH*/
 #pricing{
     position: relative;
     height: 100%;
-    background: linear-gradient(50deg, rgb(231, 111, 81), rgb(38, 70, 83));
+    background: linear-gradient(50deg, rgb(42, 157, 143), rgb(38, 70, 83));
 }
 ul.pricing-table {
     display:block;
@@ -883,7 +883,7 @@ HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH*/
     background-color: #39c;
     transition: .8s;
     border: 2px solid #e7e7e7 !important;
-    /*background: linear-gradient(90deg, rgb(231, 111, 81), rgb(38, 70, 83));*/
+    /*background: linear-gradient(90deg, rgb(42, 157, 143), rgb(38, 70, 83));*/
 }
 .contact{
     font-size: 15px;
@@ -910,13 +910,13 @@ HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH*/
     font-weight: 700;
 }
 .btn-sub:hover{
-    background-color: rgb(231, 111, 81);
-    border-color: rgb(231, 111, 81);
+    background-color: rgb(42, 157, 143);
+    border-color: rgb(42, 157, 143);
     color: white;
     transition: .8s;
 }
 input[type="username"]:focus, input[type="email"]:focus, input[type="text"]:focus{
-    border-color: rgb(231, 111, 81);
+    border-color: rgb(42, 157, 143);
     box-shadow: none;
 }
 input.form-control, .message {
@@ -928,7 +928,7 @@ HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH*/
 
 #footer {
     /*background: linear-gradient(180deg, rgb(0, 190, 111), rgb(38, 70, 83));*/
-    background-color: #39c;
+    background-color: #e76f51;
     color:white;
     padding:40px 0;
 }
