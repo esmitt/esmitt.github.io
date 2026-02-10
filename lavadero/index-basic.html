@@ -1,0 +1,1138 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>CarWash Básico - Sistema de Gestión</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+        :root {
+            --primary: #0066FF;
+            --primary-dark: #0052CC;
+            --primary-light: #E6F0FF;
+            --success: #00C851;
+            --text: #2C3340;
+            --text-light: #6B7280;
+            --border: #E5E7EB;
+            --bg: #F9FAFB;
+            --white: #FFFFFF;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        .app {
+            max-width: 480px;
+            margin: 0 auto;
+            background: var(--white);
+            min-height: 100vh;
+        }
+
+        .top-bar {
+            background: var(--white);
+            border-bottom: 1px solid var(--border);
+            padding: 16px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .brand {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+
+        .plan-badge {
+            display: inline-block;
+            background: var(--bg);
+            color: var(--text-light);
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .center-selector {
+            margin-top: 12px;
+        }
+
+        .center-select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+            background: white;
+        }
+
+        .nav-tabs {
+            background: var(--white);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            position: sticky;
+            top: 114px;
+            z-index: 99;
+        }
+
+        .nav-tab {
+            flex: 1;
+            padding: 14px 8px;
+            text-align: center;
+            border: none;
+            background: none;
+            color: var(--text-light);
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+        }
+
+        .nav-tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        .section {
+            padding: 20px;
+            padding-bottom: 100px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .section-subtitle {
+            font-size: 13px;
+            color: var(--text-light);
+            margin-bottom: 20px;
+        }
+
+        .camera-container {
+            border-radius: 12px;
+            overflow: hidden;
+            background: #1A1D29;
+            margin-bottom: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .camera-preview {
+            width: 100%;
+            height: 280px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            background: linear-gradient(135deg, #1A1D29 0%, #2C3340 100%);
+        }
+
+        .camera-icon {
+            font-size: 48px;
+            opacity: 0.3;
+        }
+
+        .preview-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .image-label {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .scan-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(0,102,255,0.3);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .scan-text {
+            color: white;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 14px 20px;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 2px 8px rgba(0,102,255,0.3);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-secondary {
+            background: var(--bg);
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+
+        .detection-card {
+            background: white;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+
+        .detection-card.success {
+            border-color: var(--success);
+            background: #F0FFF4;
+        }
+
+        .detection-card.new {
+            border-color: var(--primary);
+            background: var(--primary-light);
+        }
+
+        .license-plate {
+            background: white;
+            border: 3px solid #333;
+            border-radius: 8px;
+            padding: 10px 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-align: center;
+            margin: 12px 0;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            font-size: 14px;
+        }
+
+        .info-label {
+            color: var(--text-light);
+            font-weight: 500;
+        }
+
+        .info-value {
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        .form-group {
+            margin-bottom: 14px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 15px;
+            font-family: inherit;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .service-card {
+            background: white;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            padding: 14px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .service-card.selected {
+            border-color: var(--primary);
+            background: var(--primary-light);
+        }
+
+        .service-card.selected::after {
+            content: '✓';
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 22px;
+            height: 22px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .service-icon {
+            font-size: 26px;
+            margin-bottom: 8px;
+        }
+
+        .service-name {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .service-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .service-time {
+            font-size: 11px;
+            color: var(--text-light);
+        }
+
+        .service-price {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .summary-card {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border-radius: 12px;
+            padding: 18px;
+            margin-bottom: 16px;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+        }
+
+        .summary-row:last-child {
+            border-top: 1px solid rgba(255,255,255,0.2);
+            padding-top: 12px;
+            margin-top: 8px;
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .bottom-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            border-top: 1px solid var(--border);
+            padding: 14px 20px;
+            box-shadow: 0 -2px 8px rgba(0,0,0,0.05);
+            max-width: 480px;
+            margin: 0 auto;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .stat-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 16px;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: var(--text-light);
+            margin-bottom: 4px;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        .history-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .history-item {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 14px;
+        }
+
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .history-plate {
+            font-family: 'Courier New', monospace;
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .history-time {
+            font-size: 12px;
+            color: var(--text-light);
+        }
+
+        .history-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 10px;
+            border-top: 1px solid var(--border);
+        }
+
+        .history-amount {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+
+        .modal {
+            background: white;
+            border-radius: 16px;
+            max-width: 400px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            padding: 24px;
+            border-bottom: 1px solid var(--border);
+            text-align: center;
+        }
+
+        .modal-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: var(--success);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            font-size: 32px;
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .albaran-number {
+            background: var(--bg);
+            border: 2px dashed var(--border);
+            border-radius: 10px;
+            padding: 14px;
+            text-align: center;
+            margin-bottom: 16px;
+        }
+
+        .albaran-code {
+            font-family: 'Courier New', monospace;
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .photos-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .photo-preview {
+            aspect-ratio: 4/3;
+            background: var(--bg);
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .photo-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .photo-label {
+            position: absolute;
+            bottom: 8px;
+            left: 8px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: 600;
+        }
+
+        .additional-services {
+            background: var(--primary-light);
+            border: 1px solid var(--primary);
+            border-radius: 10px;
+            padding: 14px;
+            margin-bottom: 16px;
+        }
+
+        .additional-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--primary);
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useRef } = React;
+
+        const CENTERS = [
+            { id: 1, name: 'Madrid Centro', city: 'Madrid' },
+            { id: 2, name: 'Barcelona Diagonal', city: 'Barcelona' },
+            { id: 3, name: 'Valencia Puerto', city: 'Valencia' }
+        ];
+
+        const MOCK_CLIENTS = {
+            'ABC123': {
+                name: 'Juan Pérez',
+                phone: '555-1234',
+                vehicleModel: 'Toyota Corolla 2019',
+                lastVisit: '05/02/2026'
+            },
+            'XYZ789': {
+                name: 'María González',
+                phone: '555-5678',
+                vehicleModel: 'Honda Civic 2021',
+                lastVisit: '08/02/2026'
+            }
+        };
+
+        const SERVICES = [
+            { id: 1, name: 'Lavado Básico', duration: 30, price: 25, icon: '🚿' },
+            { id: 2, name: 'Aspirado Interior', duration: 45, price: 20, icon: '🧹' },
+            { id: 3, name: 'Limpieza Exterior', duration: 40, price: 15, icon: '💨' },
+            { id: 4, name: 'Tapicería', duration: 60, price: 35, icon: '🧼' }
+        ];
+
+        const DEMO_PLATES = Object.keys(MOCK_CLIENTS);
+
+        function App() {
+            const [center, setCenter] = useState(CENTERS[0]);
+            const [tab, setTab] = useState('capture');
+            const [step, setStep] = useState('before');
+            
+            const [photoBefore, setPhotoBefore] = useState(null);
+            const [photoAfter, setPhotoAfter] = useState(null);
+            const [scanning, setScanning] = useState(false);
+            
+            const [plate, setPlate] = useState(null);
+            const [client, setClient] = useState(null);
+            const [isNew, setIsNew] = useState(false);
+            
+            const [services, setServices] = useState([]);
+            const [additionalServices, setAdditionalServices] = useState([]);
+            const [form, setForm] = useState({ name: '', phone: '', vehicleModel: '' });
+            
+            const [startTime, setStartTime] = useState(null);
+            const [endTime, setEndTime] = useState(null);
+            
+            const [showModal, setShowModal] = useState(false);
+            const [receipt, setReceipt] = useState(null);
+            
+            const [stats] = useState({
+                today: 18,
+                revenue: 850
+            });
+
+            const [history] = useState([
+                { id: 1, plate: 'ABC123', time: '10:30', amount: 45 },
+                { id: 2, plate: 'XYZ789', time: '09:15', amount: 60 }
+            ]);
+
+            const inputRef = useRef(null);
+
+            const handleCapture = (type) => {
+                inputRef.current?.click();
+                inputRef.current.dataset.type = type;
+            };
+
+            const handleFileSelect = (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+
+                const type = e.target.dataset.type;
+                const reader = new FileReader();
+                
+                reader.onload = (event) => {
+                    const img = event.target.result;
+                    
+                    if (type === 'before') {
+                        setPhotoBefore(img);
+                        setScanning(true);
+                        setStartTime(new Date());
+                        
+                        setTimeout(() => {
+                            const rndPlate = Math.random() > 0.3 
+                                ? DEMO_PLATES[Math.floor(Math.random() * DEMO_PLATES.length)]
+                                : 'NEW' + Math.floor(Math.random() * 1000);
+                            
+                            setPlate(rndPlate);
+                            
+                            if (MOCK_CLIENTS[rndPlate]) {
+                                setClient(MOCK_CLIENTS[rndPlate]);
+                                setIsNew(false);
+                            } else {
+                                setIsNew(true);
+                                setClient(null);
+                            }
+                            
+                            setScanning(false);
+                            setStep('services');
+                        }, 2000);
+                    } else {
+                        setPhotoAfter(img);
+                        setEndTime(new Date());
+                        setStep('additional');
+                    }
+                };
+                reader.readAsDataURL(file);
+            };
+
+            const toggleService = (id) => {
+                setServices(prev =>
+                    prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]
+                );
+            };
+
+            const toggleAdditional = (id) => {
+                setAdditionalServices(prev =>
+                    prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]
+                );
+            };
+
+            const totalPrice = () => {
+                const main = services.reduce((sum, id) => {
+                    const svc = SERVICES.find(s => s.id === id);
+                    return sum + (svc?.price || 0);
+                }, 0);
+                
+                const additional = additionalServices.reduce((sum, id) => {
+                    const svc = SERVICES.find(s => s.id === id);
+                    return sum + (svc?.price || 0);
+                }, 0);
+                
+                return main + additional;
+            };
+
+            const totalTime = () => {
+                if (!startTime || !endTime) return 0;
+                return Math.round((endTime - startTime) / 60000);
+            };
+
+            const submit = () => {
+                const rcpt = {
+                    number: 'ALB-' + Date.now().toString().slice(-6),
+                    date: new Date().toLocaleDateString('es-ES'),
+                    plate,
+                    client: isNew ? form.name : client?.name,
+                    vehicle: isNew ? form.vehicleModel : client?.vehicleModel,
+                    center: center.name,
+                    services: [...services, ...additionalServices].map(id => SERVICES.find(s => s.id === id)),
+                    startTime: startTime.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' }),
+                    endTime: endTime.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' }),
+                    duration: totalTime(),
+                    total: totalPrice(),
+                    photoBefore,
+                    photoAfter
+                };
+                
+                setReceipt(rcpt);
+                setShowModal(true);
+            };
+
+            const reset = () => {
+                setStep('before');
+                setPhotoBefore(null);
+                setPhotoAfter(null);
+                setPlate(null);
+                setClient(null);
+                setIsNew(false);
+                setServices([]);
+                setAdditionalServices([]);
+                setForm({ name: '', phone: '', vehicleModel: '' });
+                setStartTime(null);
+                setEndTime(null);
+                setShowModal(false);
+                setReceipt(null);
+            };
+
+            return (
+                <div className="app">
+                    <div className="top-bar">
+                        <div className="brand">🚗 CarWash</div>
+                        <div className="plan-badge">Plan Básico</div>
+                        <div className="center-selector">
+                            <select 
+                                className="center-select"
+                                value={center.id}
+                                onChange={(e) => setCenter(CENTERS.find(c => c.id === parseInt(e.target.value)))}
+                            >
+                                {CENTERS.map(c => (
+                                    <option key={c.id} value={c.id}>{c.name}</option>
+                                ))}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div className="nav-tabs">
+                        <button className={`nav-tab ${tab === 'capture' ? 'active' : ''}`} onClick={() => setTab('capture')}>
+                            Capturar
+                        </button>
+                        <button className={`nav-tab ${tab === 'history' ? 'active' : ''}`} onClick={() => setTab('history')}>
+                            Historial
+                        </button>
+                        <button className={`nav-tab ${tab === 'stats' ? 'active' : ''}`} onClick={() => setTab('stats')}>
+                            Estadísticas
+                        </button>
+                    </div>
+
+                    {tab === 'capture' && step === 'before' && (
+                        <div className="section">
+                            <h2 className="section-title">Foto Inicial</h2>
+                            <p className="section-subtitle">Captura el vehículo antes del servicio</p>
+
+                            <div className="camera-container">
+                                <div className="camera-preview">
+                                    {!photoBefore && <div className="camera-icon">📷</div>}
+                                    {photoBefore && !scanning && (
+                                        <>
+                                            <img src={photoBefore} alt="Before" className="preview-image" />
+                                            <div className="image-label">ANTES</div>
+                                        </>
+                                    )}
+                                    {scanning && (
+                                        <div className="scan-overlay">
+                                            <div className="spinner"></div>
+                                            <div className="scan-text">Analizando matrícula...</div>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+
+                            <input 
+                                ref={inputRef}
+                                type="file"
+                                accept="image/*"
+                                capture="environment"
+                                onChange={handleFileSelect}
+                                style={{display: 'none'}}
+                            />
+
+                            {!photoBefore && (
+                                <div className="btn-group">
+                                    <button className="btn btn-primary" onClick={() => handleCapture('before')}>
+                                        📸 Tomar Foto
+                                    </button>
+                                </div>
+                            )}
+
+                            {photoBefore && !scanning && (
+                                <div className="btn-group">
+                                    <button className="btn btn-secondary" onClick={() => setPhotoBefore(null)}>
+                                        Retomar
+                                    </button>
+                                </div>
+                            )}
+                        </div>
+                    )}
+
+                    {tab === 'capture' && step === 'services' && (
+                        <div className="section">
+                            <div className={`detection-card ${isNew ? 'new' : 'success'}`}>
+                                <div className="license-plate">{plate}</div>
+                                
+                                {!isNew && client && (
+                                    <div>
+                                        <div className="info-row">
+                                            <span className="info-label">Cliente</span>
+                                            <span className="info-value">{client.name}</span>
+                                        </div>
+                                        <div className="info-row">
+                                            <span className="info-label">Vehículo</span>
+                                            <span className="info-value">{client.vehicleModel}</span>
+                                        </div>
+                                    </div>
+                                )}
+
+                                {isNew && (
+                                    <div>
+                                        <div className="form-group">
+                                            <label className="form-label">Nombre *</label>
+                                            <input 
+                                                type="text"
+                                                className="form-input"
+                                                value={form.name}
+                                                onChange={(e) => setForm({...form, name: e.target.value})}
+                                            />
+                                        </div>
+                                        <div className="form-group">
+                                            <label className="form-label">Teléfono *</label>
+                                            <input 
+                                                type="tel"
+                                                className="form-input"
+                                                value={form.phone}
+                                                onChange={(e) => setForm({...form, phone: e.target.value})}
+                                            />
+                                        </div>
+                                        <div className="form-group">
+                                            <label className="form-label">Vehículo</label>
+                                            <input 
+                                                type="text"
+                                                className="form-input"
+                                                value={form.vehicleModel}
+                                                onChange={(e) => setForm({...form, vehicleModel: e.target.value})}
+                                            />
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+
+                            <h3 className="section-title">Servicios a Realizar</h3>
+                            <p className="section-subtitle">Selecciona los servicios iniciales</p>
+
+                            <div className="services-grid">
+                                {SERVICES.map(svc => (
+                                    <div 
+                                        key={svc.id}
+                                        className={`service-card ${services.includes(svc.id) ? 'selected' : ''}`}
+                                        onClick={() => toggleService(svc.id)}
+                                    >
+                                        <div className="service-icon">{svc.icon}</div>
+                                        <div className="service-name">{svc.name}</div>
+                                        <div className="service-meta">
+                                            <span className="service-time">{svc.duration}m</span>
+                                            <span className="service-price">€{svc.price}</span>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+
+                            <div className="bottom-bar">
+                                <div className="btn-group">
+                                    <button className="btn btn-secondary" onClick={reset}>
+                                        Cancelar
+                                    </button>
+                                    <button 
+                                        className="btn btn-primary"
+                                        onClick={() => setStep('after')}
+                                        disabled={services.length === 0 || (isNew && !form.name)}
+                                    >
+                                        Continuar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {tab === 'capture' && step === 'after' && (
+                        <div className="section">
+                            <h2 className="section-title">Foto Final</h2>
+                            <p className="section-subtitle">Captura el vehículo limpio</p>
+
+                            <div className="camera-container">
+                                <div className="camera-preview">
+                                    {!photoAfter && <div className="camera-icon">📷</div>}
+                                    {photoAfter && (
+                                        <>
+                                            <img src={photoAfter} alt="After" className="preview-image" />
+                                            <div className="image-label">DESPUÉS</div>
+                                        </>
+                                    )}
+                                </div>
+                            </div>
+
+                            {!photoAfter && (
+                                <div className="btn-group">
+                                    <button className="btn btn-primary" onClick={() => handleCapture('after')}>
+                                        📸 Tomar Foto
+                                    </button>
+                                </div>
+                            )}
+
+                            {photoAfter && (
+                                <div className="btn-group">
+                                    <button className="btn btn-secondary" onClick={() => setPhotoAfter(null)}>
+                                        Retomar
+                                    </button>
+                                </div>
+                            )}
+                        </div>
+                    )}
+
+                    {tab === 'capture' && step === 'additional' && (
+                        <div className="section">
+                            <h2 className="section-title">Servicios Adicionales</h2>
+                            <p className="section-subtitle">¿Se realizó algún servicio extra?</p>
+
+                            <div className="additional-services">
+                                <div className="additional-title">Opcionales</div>
+                                <div className="services-grid">
+                                    {SERVICES.filter(s => !services.includes(s.id)).map(svc => (
+                                        <div 
+                                            key={svc.id}
+                                            className={`service-card ${additionalServices.includes(svc.id) ? 'selected' : ''}`}
+                                            onClick={() => toggleAdditional(svc.id)}
+                                        >
+                                            <div className="service-icon">{svc.icon}</div>
+                                            <div className="service-name">{svc.name}</div>
+                                            <div className="service-meta">
+                                                <span className="service-price">€{svc.price}</span>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+
+                            <div className="summary-card">
+                                <div className="summary-row">
+                                    <span>Hora inicio</span>
+                                    <span>{startTime?.toLocaleTimeString('es-ES', {hour: '2-digit', minute: '2-digit'})}</span>
+                                </div>
+                                <div className="summary-row">
+                                    <span>Hora fin</span>
+                                    <span>{endTime?.toLocaleTimeString('es-ES', {hour: '2-digit', minute: '2-digit'})}</span>
+                                </div>
+                                <div className="summary-row">
+                                    <span>Duración real</span>
+                                    <span>{totalTime()} min</span>
+                                </div>
+                                <div className="summary-row">
+                                    <span>Total</span>
+                                    <span>€{totalPrice()}</span>
+                                </div>
+                            </div>
+
+                            <div className="bottom-bar">
+                                <button className="btn btn-primary" style={{width: '100%'}} onClick={submit}>
+                                    Generar Albarán
+                                </button>
+                            </div>
+                        </div>
+                    )}
+
+                    {tab === 'history' && (
+                        <div className="section">
+                            <h2 className="section-title">Historial de Hoy</h2>
+                            <p className="section-subtitle">{history.length} servicios</p>
+
+                            <div className="history-list">
+                                {history.map(item => (
+                                    <div key={item.id} className="history-item">
+                                        <div className="history-header">
+                                            <div className="history-plate">{item.plate}</div>
+                                            <div className="history-time">{item.time}</div>
+                                        </div>
+                                        <div className="history-footer">
+                                            <div></div>
+                                            <div className="history-amount">€{item.amount}</div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+
+                    {tab === 'stats' && (
+                        <div className="section">
+                            <h2 className="section-title">Estadísticas Básicas</h2>
+                            <p className="section-subtitle">Resumen de hoy</p>
+
+                            <div className="stats-grid">
+                                <div className="stat-card">
+                                    <div className="stat-label">Servicios Hoy</div>
+                                    <div className="stat-value">{stats.today}</div>
+                                </div>
+                                <div className="stat-card">
+                                    <div className="stat-label">Ingresos Hoy</div>
+                                    <div className="stat-value">€{stats.revenue}</div>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {showModal && receipt && (
+                        <div className="modal-overlay" onClick={reset}>
+                            <div className="modal" onClick={(e) => e.stopPropagation()}>
+                                <div className="modal-header">
+                                    <div className="modal-icon">✓</div>
+                                    <h2 className="modal-title">Albarán Generado</h2>
+                                </div>
+
+                                <div className="modal-body">
+                                    <div className="albaran-number">
+                                        <div className="albaran-code">{receipt.number}</div>
+                                    </div>
+
+                                    <div>
+                                        <div className="info-row">
+                                            <span className="info-label">Matrícula</span>
+                                            <span className="info-value">{receipt.plate}</span>
+                                        </div>
+                                        <div className="info-row">
+                                            <span className="info-label">Centro</span>
+                                            <span className="info-value">{receipt.center}</span>
+                                        </div>
+                                        <div className="info-row">
+                                            <span className="info-label">Inicio</span>
+                                            <span className="info-value">{receipt.startTime}</span>
+                                        </div>
+                                        <div className="info-row">
+                                            <span className="info-label">Fin</span>
+                                            <span className="info-value">{receipt.endTime}</span>
+                                        </div>
+                                        <div className="info-row">
+                                            <span className="info-label">Duración</span>
+                                            <span className="info-value">{receipt.duration} min</span>
+                                        </div>
+                                        <div className="info-row">
+                                            <span className="info-label">Total</span>
+                                            <span className="info-value">€{receipt.total}</span>
+                                        </div>
+                                    </div>
+
+                                    <div className="photos-grid">
+                                        <div className="photo-preview">
+                                            <img src={receipt.photoBefore} alt="Before" />
+                                            <div className="photo-label">ANTES</div>
+                                        </div>
+                                        <div className="photo-preview">
+                                            <img src={receipt.photoAfter} alt="After" />
+                                            <div className="photo-label">DESPUÉS</div>
+                                        </div>
+                                    </div>
+
+                                    <button className="btn btn-primary" style={{marginTop: '16px', width: '100%'}} onClick={reset}>
+                                        Nuevo Servicio
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            );
+        }
+
+        ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+</body>
+</html>

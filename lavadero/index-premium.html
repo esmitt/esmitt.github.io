@@ -5,26 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>CarCare Elite - Sistema Premium</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Work+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>CarWash Premium - Sistema Avanzado</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <style>
         :root {
-            --gold: #D4AF37;
-            --gold-light: #F4E4B8;
-            --gold-dark: #B8941F;
+            --primary: #D4AF37;
+            --primary-dark: #B8941F;
+            --primary-light: #F4E4B8;
+            --success: #2C6E49;
+            --text: #0A1128;
+            --text-light: #5C677D;
+            --border: #E8E6E1;
+            --bg: #FAF9F6;
+            --white: #FFFFFF;
             --navy: #0A1128;
             --navy-light: #1C2541;
-            --slate: #3A506B;
-            --cream: #FAF9F6;
             --pearl: #EEEDE7;
-            --text-primary: #0A1128;
-            --text-secondary: #5C677D;
-            --border-light: #E8E6E1;
-            --success: #2C6E49;
-            --accent: #C9ADA7;
         }
 
         * {
@@ -34,405 +33,320 @@
         }
 
         body {
-            font-family: 'Work Sans', sans-serif;
-            background: var(--cream);
-            color: var(--text-primary);
-            -webkit-font-smoothing: antialiased;
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
         }
 
         .app {
             max-width: 480px;
             margin: 0 auto;
-            background: var(--cream);
+            background: var(--white);
             min-height: 100vh;
         }
 
-        /* Elegant Header */
-        .header {
-            background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
-            color: var(--cream);
-            padding: 24px 24px 20px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .header::before {
-            content: '';
-            position: absolute;
+        .top-bar {
+            background: linear-gradient(135deg, var(--navy), var(--navy-light));
+            border-bottom: 1px solid rgba(212,175,55,0.3);
+            padding: 18px 20px;
+            position: sticky;
             top: 0;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            z-index: 100;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.15);
         }
 
         .brand {
             font-family: 'Playfair Display', serif;
-            font-size: 26px;
+            font-size: 24px;
             font-weight: 900;
-            letter-spacing: -0.5px;
-            margin-bottom: 4px;
-            background: linear-gradient(135deg, var(--cream), var(--gold-light));
+            background: linear-gradient(135deg, var(--primary-light), var(--primary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .tagline {
-            font-size: 12px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            opacity: 0.7;
-            font-weight: 400;
-        }
-
-        .header-meta {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 16px;
-            padding-top: 16px;
-            border-top: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .location {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 13px;
-            opacity: 0.8;
-        }
-
-        .operator {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 13px;
-        }
-
-        .avatar {
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            background: var(--gold);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-            font-weight: 700;
-            color: var(--navy);
-        }
-
-        /* Refined Navigation */
-        .nav {
-            background: white;
-            border-bottom: 1px solid var(--border-light);
-            display: flex;
-            padding: 0 16px;
-            position: sticky;
-            top: 0;
-            z-index: 99;
-        }
-
-        .nav-item {
-            flex: 1;
-            padding: 16px 8px;
-            text-align: center;
-            background: none;
-            border: none;
-            color: var(--text-secondary);
-            font-size: 13px;
-            font-weight: 500;
-            cursor: pointer;
-            position: relative;
-            transition: color 0.3s;
-        }
-
-        .nav-item.active {
-            color: var(--gold-dark);
-        }
-
-        .nav-item.active::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 20%;
-            right: 20%;
-            height: 2px;
-            background: var(--gold);
-        }
-
-        /* Content Sections */
-        .content {
-            padding: 24px;
-            padding-bottom: 100px;
-        }
-
-        .section-header {
-            margin-bottom: 20px;
-        }
-
-        .title {
-            font-family: 'Playfair Display', serif;
-            font-size: 24px;
-            font-weight: 700;
-            color: var(--text-primary);
             margin-bottom: 6px;
         }
 
-        .subtitle {
-            font-size: 14px;
-            color: var(--text-secondary);
-            font-weight: 400;
+        .plan-badge {
+            display: inline-block;
+            background: var(--primary);
+            color: var(--navy);
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
-        /* Camera Interface */
-        .camera-frame {
-            position: relative;
+        .center-selector {
+            margin-top: 12px;
+        }
+
+        .center-select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+            background: rgba(255,255,255,0.1);
+            color: var(--primary-light);
+        }
+
+        .center-select option {
+            background: var(--navy);
+            color: white;
+        }
+
+        .nav-tabs {
+            background: var(--white);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            position: sticky;
+            top: 114px;
+            z-index: 99;
+        }
+
+        .nav-tab {
+            flex: 1;
+            padding: 14px 8px;
+            text-align: center;
+            border: none;
+            background: none;
+            color: var(--text-light);
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+        }
+
+        .nav-tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        .section {
+            padding: 20px;
+            padding-bottom: 100px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .section-subtitle {
+            font-size: 13px;
+            color: var(--text-light);
+            margin-bottom: 20px;
+        }
+
+        .camera-container {
             border-radius: 12px;
             overflow: hidden;
-            margin-bottom: 24px;
-            box-shadow: 0 8px 24px rgba(10, 17, 40, 0.12);
+            background: #1A1D29;
+            margin-bottom: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
 
-        .camera-view {
+        .camera-preview {
             width: 100%;
-            height: 320px;
-            background: linear-gradient(135deg, var(--navy) 0%, var(--slate) 100%);
+            height: 280px;
             display: flex;
             align-items: center;
             justify-content: center;
             position: relative;
+            background: linear-gradient(135deg, #1A1D29 0%, #2C3340 100%);
         }
 
-        .camera-placeholder {
+        .camera-icon {
             font-size: 48px;
-            opacity: 0.2;
+            opacity: 0.3;
         }
 
-        .preview-img {
+        .preview-image {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
 
-        .stage-badge {
+        .image-label {
             position: absolute;
-            top: 16px;
-            left: 16px;
-            background: rgba(10, 17, 40, 0.85);
-            backdrop-filter: blur(10px);
-            color: var(--gold);
-            padding: 6px 14px;
-            border-radius: 20px;
+            top: 12px;
+            left: 12px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 6px;
             font-size: 11px;
             font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            border: 1px solid var(--gold);
         }
 
-        .capture-controls {
-            position: absolute;
-            bottom: 24px;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-
-        .shutter {
-            width: 68px;
-            height: 68px;
-            border-radius: 50%;
-            background: var(--gold);
-            border: 4px solid var(--cream);
-            cursor: pointer;
-            transition: all 0.2s;
-            box-shadow: 0 4px 16px rgba(212, 175, 55, 0.4);
-        }
-
-        .shutter:active {
-            transform: scale(0.92);
-        }
-
-        .processing-overlay {
+        .scan-overlay {
             position: absolute;
             inset: 0;
-            background: rgba(10, 17, 40, 0.8);
-            backdrop-filter: blur(4px);
+            background: rgba(0,0,0,0.5);
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 16px;
+            flex-direction: column;
+            gap: 12px;
         }
 
         .spinner {
             width: 50px;
             height: 50px;
-            border: 3px solid rgba(212, 175, 55, 0.3);
-            border-top-color: var(--gold);
+            border: 3px solid rgba(0,102,255,0.3);
+            border-top-color: var(--primary);
             border-radius: 50%;
-            animation: rotate 1s linear infinite;
+            animation: spin 1s linear infinite;
         }
 
-        @keyframes rotate {
+        @keyframes spin {
             to { transform: rotate(360deg); }
         }
 
-        .process-text {
-            color: var(--gold-light);
+        .scan-text {
+            color: white;
             font-size: 13px;
-            font-weight: 500;
-            letter-spacing: 1px;
-        }
-
-        /* Detection Card */
-        .result-card {
-            background: white;
-            border: 1px solid var(--border-light);
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 24px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-        }
-
-        .result-card.highlight {
-            border-color: var(--gold);
-            background: linear-gradient(135deg, #FFFCF5 0%, white 100%);
-        }
-
-        .result-header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 16px;
-            padding-bottom: 16px;
-            border-bottom: 1px solid var(--border-light);
-        }
-
-        .result-icon {
-            width: 44px;
-            height: 44px;
-            border-radius: 10px;
-            background: var(--gold-light);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 22px;
-        }
-
-        .result-label {
-            font-size: 12px;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            color: var(--text-secondary);
             font-weight: 600;
         }
 
-        .plate-display {
+        .btn-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 14px 20px;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 2px 8px rgba(0,102,255,0.3);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-secondary {
+            background: var(--bg);
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+
+        .detection-card {
             background: white;
-            border: 3px solid var(--text-primary);
-            border-radius: 6px;
-            padding: 10px 18px;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+
+        .detection-card.success {
+            border-color: var(--success);
+            background: #F0FFF4;
+        }
+
+        .detection-card.new {
+            border-color: var(--primary);
+            background: var(--primary-light);
+        }
+
+        .license-plate {
+            background: white;
+            border: 3px solid #333;
+            border-radius: 8px;
+            padding: 10px 20px;
             font-family: 'Courier New', monospace;
-            font-size: 26px;
+            font-size: 24px;
             font-weight: 700;
             letter-spacing: 3px;
             text-align: center;
             margin: 12px 0;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
-        .info-grid {
-            display: grid;
-            gap: 10px;
-        }
-
-        .info-item {
+        .info-row {
             display: flex;
             justify-content: space-between;
             padding: 8px 0;
             font-size: 14px;
         }
 
-        .info-key {
-            color: var(--text-secondary);
+        .info-label {
+            color: var(--text-light);
             font-weight: 500;
         }
 
-        .info-val {
-            color: var(--text-primary);
+        .info-value {
+            color: var(--text);
             font-weight: 600;
-            text-align: right;
         }
 
-        /* Form Elements */
-        .field {
-            margin-bottom: 16px;
+        .form-group {
+            margin-bottom: 14px;
         }
 
-        .field-label {
+        .form-label {
             display: block;
-            font-size: 12px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: var(--text-secondary);
-            margin-bottom: 8px;
+            font-size: 13px;
             font-weight: 600;
+            margin-bottom: 6px;
         }
 
-        .field-input {
+        .form-input {
             width: 100%;
-            padding: 14px 16px;
-            border: 1px solid var(--border-light);
+            padding: 12px;
+            border: 1px solid var(--border);
             border-radius: 8px;
             font-size: 15px;
             font-family: inherit;
-            background: white;
-            transition: all 0.2s;
         }
 
-        .field-input:focus {
+        .form-input:focus {
             outline: none;
-            border-color: var(--gold);
-            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+            border-color: var(--primary);
         }
 
-        /* Service Cards */
-        .services {
+        .services-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 14px;
-            margin-bottom: 24px;
+            gap: 12px;
+            margin-bottom: 16px;
         }
 
-        .service {
+        .service-card {
             background: white;
-            border: 1px solid var(--border-light);
+            border: 2px solid var(--border);
             border-radius: 10px;
-            padding: 18px 14px;
+            padding: 14px;
             cursor: pointer;
-            transition: all 0.2s;
             position: relative;
         }
 
-        .service:active {
-            transform: scale(0.97);
+        .service-card.selected {
+            border-color: var(--primary);
+            background: var(--primary-light);
         }
 
-        .service.chosen {
-            border-color: var(--gold);
-            background: linear-gradient(135deg, #FFFCF5, white);
-        }
-
-        .service.chosen::before {
+        .service-card.selected::after {
             content: '✓';
             position: absolute;
-            top: 10px;
-            right: 10px;
+            top: 8px;
+            right: 8px;
             width: 22px;
             height: 22px;
-            background: var(--gold);
+            background: var(--primary);
             color: white;
             border-radius: 50%;
             display: flex;
@@ -442,358 +356,249 @@
             font-weight: 700;
         }
 
-        .service-symbol {
-            font-size: 30px;
-            margin-bottom: 10px;
+        .service-icon {
+            font-size: 26px;
+            margin-bottom: 8px;
         }
 
-        .service-title {
-            font-size: 14px;
+        .service-name {
+            font-size: 13px;
             font-weight: 600;
-            color: var(--text-primary);
             margin-bottom: 6px;
-            line-height: 1.3;
         }
 
-        .service-details {
+        .service-meta {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-top: 10px;
         }
 
-        .service-duration {
-            font-size: 12px;
-            color: var(--text-secondary);
+        .service-time {
+            font-size: 11px;
+            color: var(--text-light);
         }
 
-        .service-cost {
-            font-size: 15px;
+        .service-price {
+            font-size: 14px;
             font-weight: 700;
-            color: var(--gold-dark);
+            color: var(--primary);
         }
 
-        /* Summary Panel */
-        .summary {
-            background: linear-gradient(135deg, var(--navy), var(--navy-light));
-            color: var(--cream);
+        .summary-card {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
             border-radius: 12px;
-            padding: 22px;
-            margin-bottom: 24px;
-            box-shadow: 0 8px 24px rgba(10, 17, 40, 0.2);
+            padding: 18px;
+            margin-bottom: 16px;
         }
 
-        .summary-line {
+        .summary-row {
             display: flex;
             justify-content: space-between;
-            padding: 10px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding: 8px 0;
         }
 
-        .summary-line:last-child {
-            border: none;
-            padding-top: 16px;
+        .summary-row:last-child {
+            border-top: 1px solid rgba(255,255,255,0.2);
+            padding-top: 12px;
             margin-top: 8px;
-            font-size: 19px;
+            font-size: 18px;
             font-weight: 700;
         }
 
-        .sum-key {
-            font-size: 13px;
-            opacity: 0.85;
-        }
-
-        .sum-val {
-            font-weight: 600;
-            font-size: 15px;
-        }
-
-        /* Buttons */
-        .actions {
-            display: flex;
-            gap: 12px;
-            margin-top: 24px;
-        }
-
-        .button {
-            flex: 1;
-            padding: 16px 24px;
-            border: none;
-            border-radius: 10px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-family: inherit;
-            letter-spacing: 0.3px;
-        }
-
-        .button-primary {
-            background: var(--gold);
-            color: var(--navy);
-            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
-        }
-
-        .button-primary:active {
-            transform: translateY(1px);
-        }
-
-        .button-primary:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        .button-outline {
-            background: transparent;
-            color: var(--text-primary);
-            border: 1.5px solid var(--border-light);
-        }
-
-        /* Fixed Bottom */
-        .fixed-bottom {
+        .bottom-bar {
             position: fixed;
             bottom: 0;
             left: 0;
             right: 0;
             background: white;
-            border-top: 1px solid var(--border-light);
-            padding: 16px 24px;
-            box-shadow: 0 -4px 12px rgba(0,0,0,0.03);
+            border-top: 1px solid var(--border);
+            padding: 14px 20px;
+            box-shadow: 0 -2px 8px rgba(0,0,0,0.05);
             max-width: 480px;
             margin: 0 auto;
         }
 
-        /* Stats Dashboard */
-        .metrics {
+        .stats-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 14px;
-            margin-bottom: 28px;
+            gap: 12px;
         }
 
-        .metric {
+        .stat-card {
             background: white;
-            border: 1px solid var(--border-light);
+            border: 1px solid var(--border);
             border-radius: 10px;
-            padding: 18px;
+            padding: 16px;
         }
 
-        .metric-tag {
+        .stat-label {
             font-size: 11px;
+            color: var(--text-light);
+            margin-bottom: 4px;
             text-transform: uppercase;
-            letter-spacing: 1.2px;
-            color: var(--text-secondary);
             font-weight: 600;
-            margin-bottom: 6px;
         }
 
-        .metric-number {
-            font-size: 32px;
+        .stat-value {
+            font-size: 28px;
             font-weight: 700;
-            color: var(--text-primary);
-            font-family: 'Playfair Display', serif;
         }
 
-        .metric-trend {
-            font-size: 12px;
-            color: var(--success);
-            margin-top: 4px;
-        }
-
-        /* History */
-        .timeline {
+        .history-list {
             display: flex;
             flex-direction: column;
-            gap: 14px;
+            gap: 12px;
         }
 
-        .event {
+        .history-item {
             background: white;
-            border: 1px solid var(--border-light);
+            border: 1px solid var(--border);
             border-radius: 10px;
-            padding: 18px;
+            padding: 14px;
         }
 
-        .event-top {
+        .history-header {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 12px;
-        }
-
-        .event-plate {
-            font-family: 'Courier New', monospace;
-            font-size: 17px;
-            font-weight: 700;
-        }
-
-        .event-time {
-            font-size: 12px;
-            color: var(--text-secondary);
-        }
-
-        .event-services {
-            font-size: 13px;
-            color: var(--text-secondary);
             margin-bottom: 10px;
         }
 
-        .event-bottom {
+        .history-plate {
+            font-family: 'Courier New', monospace;
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .history-time {
+            font-size: 12px;
+            color: var(--text-light);
+        }
+
+        .history-footer {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding-top: 10px;
-            border-top: 1px solid var(--border-light);
+            border-top: 1px solid var(--border);
         }
 
-        .event-operator {
-            font-size: 13px;
-            color: var(--text-secondary);
-        }
-
-        .event-total {
-            font-size: 17px;
+        .history-amount {
+            font-size: 16px;
             font-weight: 700;
-            color: var(--gold-dark);
+            color: var(--primary);
         }
 
-        /* Modal */
-        .overlay {
+        .modal-overlay {
             position: fixed;
             inset: 0;
-            background: rgba(10, 17, 40, 0.75);
-            backdrop-filter: blur(4px);
+            background: rgba(0,0,0,0.6);
             display: flex;
             align-items: center;
             justify-content: center;
             z-index: 1000;
-            padding: 24px;
+            padding: 20px;
         }
 
-        .dialog {
+        .modal {
             background: white;
             border-radius: 16px;
-            max-width: 420px;
+            max-width: 400px;
             width: 100%;
-            max-height: 85vh;
+            max-height: 90vh;
             overflow-y: auto;
-            animation: dialogEnter 0.3s ease-out;
         }
 
-        @keyframes dialogEnter {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .dialog-top {
-            padding: 28px 24px 24px;
+        .modal-header {
+            padding: 24px;
+            border-bottom: 1px solid var(--border);
             text-align: center;
-            border-bottom: 1px solid var(--border-light);
         }
 
-        .success-badge {
-            width: 72px;
-            height: 72px;
+        .modal-icon {
+            width: 64px;
+            height: 64px;
             border-radius: 50%;
             background: var(--success);
             display: flex;
             align-items: center;
             justify-content: center;
             margin: 0 auto 16px;
-            font-size: 36px;
-            animation: badgePop 0.4s ease-out;
+            font-size: 32px;
         }
 
-        @keyframes badgePop {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.08); }
-        }
-
-        .dialog-heading {
-            font-family: 'Playfair Display', serif;
-            font-size: 22px;
+        .modal-title {
+            font-size: 20px;
             font-weight: 700;
-            color: var(--text-primary);
             margin-bottom: 6px;
         }
 
-        .dialog-desc {
-            font-size: 14px;
-            color: var(--text-secondary);
+        .modal-body {
+            padding: 20px;
         }
 
-        .dialog-content {
-            padding: 24px;
-        }
-
-        .receipt-code {
-            background: var(--pearl);
-            border: 2px dashed var(--gold);
+        .albaran-number {
+            background: var(--bg);
+            border: 2px dashed var(--border);
             border-radius: 10px;
-            padding: 18px;
+            padding: 14px;
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
         }
 
-        .code-label {
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            color: var(--text-secondary);
-            margin-bottom: 6px;
-            font-weight: 600;
-        }
-
-        .code-number {
+        .albaran-code {
             font-family: 'Courier New', monospace;
-            font-size: 22px;
+            font-size: 18px;
             font-weight: 700;
-            color: var(--gold-dark);
+            color: var(--primary);
         }
 
-        .receipt-details {
-            display: grid;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-
-        .photos {
+        .photos-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 12px;
             margin-top: 16px;
         }
 
-        .photo-box {
+        .photo-preview {
             aspect-ratio: 4/3;
-            background: var(--pearl);
+            background: var(--bg);
             border-radius: 8px;
             overflow: hidden;
             position: relative;
         }
 
-        .photo-box img {
+        .photo-preview img {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
 
-        .photo-tag {
+        .photo-label {
             position: absolute;
             bottom: 8px;
             left: 8px;
-            background: rgba(10, 17, 40, 0.85);
-            color: var(--gold);
-            padding: 4px 10px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 4px 8px;
             border-radius: 4px;
             font-size: 10px;
-            font-weight: 700;
-            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        .additional-services {
+            background: var(--primary-light);
+            border: 1px solid var(--primary);
+            border-radius: 10px;
+            padding: 14px;
+            margin-bottom: 16px;
+        }
+
+        .additional-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--primary);
         }
     </style>
 </head>
@@ -803,92 +608,106 @@
     <script type="text/babel">
         const { useState, useRef } = React;
 
-        const COMPANIES = [
-            { id: 1, name: 'Centro Premium', location: 'Madrid Centro' },
-            { id: 2, name: 'Norte Elite', location: 'Las Rozas' },
-            { id: 3, name: 'Sur Executive', location: 'Pozuelo' }
+        const CENTERS = [
+            { id: 1, name: 'Madrid Centro', city: 'Madrid' },
+            { id: 2, name: 'Barcelona Diagonal', city: 'Barcelona' },
+            { id: 3, name: 'Valencia Puerto', city: 'Valencia' }
         ];
 
         const MOCK_CLIENTS = {
             'ABC123': {
-                name: 'Sr. Martínez',
-                phone: '+34 600 123 456',
-                email: 'martinez@email.com',
-                vehicleModel: 'Mercedes-Benz Clase E 2022',
-                lastVisit: '05/02/2026',
-                totalVisits: 18
+                name: 'Juan Pérez',
+                phone: '555-1234',
+                vehicleModel: 'Toyota Corolla 2019',
+                lastVisit: '05/02/2026'
             },
             'XYZ789': {
-                name: 'Sra. Rodríguez',
-                phone: '+34 610 987 654',
-                email: 'rodriguez@email.com',
-                vehicleModel: 'BMW Serie 5 2021',
-                lastVisit: '08/02/2026',
-                totalVisits: 12
+                name: 'María González',
+                phone: '555-5678',
+                vehicleModel: 'Honda Civic 2021',
+                lastVisit: '08/02/2026'
             }
         };
 
         const SERVICES = [
-            { id: 1, name: 'Lavado Premium', duration: 45, price: 45, icon: '🚿' },
-            { id: 2, name: 'Interior Profundo', duration: 60, price: 65, icon: '🧹' },
-            { id: 3, name: 'Detallado Exterior', duration: 90, price: 85, icon: '✨' },
-            { id: 4, name: 'Tapicería Premium', duration: 75, price: 95, icon: '🧼' },
-            { id: 5, name: 'Pulido Cerámico', duration: 120, price: 180, icon: '💎' },
-            { id: 6, name: 'Protección Total', duration: 90, price: 150, icon: '🛡️' }
+            { id: 1, name: 'Lavado Básico', duration: 30, price: 25, icon: '🚿' },
+            { id: 2, name: 'Aspirado Interior', duration: 45, price: 20, icon: '🧹' },
+            { id: 3, name: 'Limpieza Exterior', duration: 40, price: 15, icon: '💨' },
+            { id: 4, name: 'Tapicería', duration: 60, price: 35, icon: '🧼' }
         ];
 
         const DEMO_PLATES = Object.keys(MOCK_CLIENTS);
 
         function App() {
-            const [company] = useState(COMPANIES[0]);
-            const [operator] = useState({ name: 'Carlos Martín', initials: 'CM' });
+            const [center, setCenter] = useState(CENTERS[0]);
             const [tab, setTab] = useState('capture');
-            const [stage, setStage] = useState('camera');
+            const [step, setStep] = useState('before');
             
-            const [beforePhotos, setBeforePhotos] = useState([]);
-            const [afterPhotos, setAfterPhotos] = useState([]);
-            const [photoMode, setPhotoMode] = useState('before');
-            const [processing, setProcessing] = useState(false);
+            const [photoBefore, setPhotoBefore] = useState(null);
+            const [photoAfter, setPhotoAfter] = useState(null);
+            const [scanning, setScanning] = useState(false);
             
             const [plate, setPlate] = useState(null);
             const [client, setClient] = useState(null);
             const [isNew, setIsNew] = useState(false);
             
             const [services, setServices] = useState([]);
+            const [additionalServices, setAdditionalServices] = useState([]);
             const [form, setForm] = useState({ name: '', phone: '', vehicleModel: '' });
+            
+            const [startTime, setStartTime] = useState(null);
+            const [endTime, setEndTime] = useState(null);
             
             const [showModal, setShowModal] = useState(false);
             const [receipt, setReceipt] = useState(null);
             
             const [stats] = useState({
-                completed: 31,
+                today: 31,
                 revenue: 2840,
                 avgTime: 68,
-                pending: 2
+                efficiency: 92
             });
 
-            const [records] = useState([
-                { id: 1, plate: 'ABC123', time: '11:45', services: ['Lavado Premium', 'Interior Profundo'], operator: 'Carlos M.', amount: 110 },
-                { id: 2, plate: 'XYZ789', time: '10:20', services: ['Pulido Cerámico'], operator: 'Ana L.', amount: 180 }
+            const [history] = useState([
+                { id: 1, plate: 'ABC123', time: '10:30', operator: 'Carlos M.', amount: 45 },
+                { id: 2, plate: 'XYZ789', time: '09:15', operator: 'Ana L.', amount: 60 }
+            ]);
+
+            const [centerComparison] = useState([
+                { center: 'Madrid Premium', services: 31, revenue: 2840, rank: 1 },
+                { center: 'Barcelona Elite', services: 28, revenue: 2650, rank: 2 },
+                { center: 'Valencia Executive', services: 24, revenue: 2120, rank: 3 }
+            ]);
+
+            const [weekData] = useState([
+                { day: 'Lun', value: 18 },
+                { day: 'Mar', value: 22 },
+                { day: 'Mié', value: 25 },
+                { day: 'Jue', value: 28 },
+                { day: 'Vie', value: 31 }
             ]);
 
             const inputRef = useRef(null);
 
-            const handleShutter = () => {
+            const handleCapture = (type) => {
                 inputRef.current?.click();
+                inputRef.current.dataset.type = type;
             };
 
-            const handleFileChange = (e) => {
+            const handleFileSelect = (e) => {
                 const file = e.target.files[0];
                 if (!file) return;
 
+                const type = e.target.dataset.type;
                 const reader = new FileReader();
+                
                 reader.onload = (event) => {
                     const img = event.target.result;
                     
-                    if (photoMode === 'before') {
-                        setBeforePhotos([img]);
-                        setProcessing(true);
+                    if (type === 'before') {
+                        setPhotoBefore(img);
+                        setScanning(true);
+                        setStartTime(new Date());
                         
                         setTimeout(() => {
                             const rndPlate = Math.random() > 0.3 
@@ -905,11 +724,13 @@
                                 setClient(null);
                             }
                             
-                            setProcessing(false);
-                            setStage('details');
-                        }, 2200);
+                            setScanning(false);
+                            setStep('services');
+                        }, 2000);
                     } else {
-                        setAfterPhotos([img]);
+                        setPhotoAfter(img);
+                        setEndTime(new Date());
+                        setStep('additional');
                     }
                 };
                 reader.readAsDataURL(file);
@@ -921,48 +742,46 @@
                 );
             };
 
-            const totalTime = () => {
-                return services.reduce((sum, id) => {
-                    const svc = SERVICES.find(s => s.id === id);
-                    return sum + (svc?.duration || 0);
-                }, 0);
+            const toggleAdditional = (id) => {
+                setAdditionalServices(prev =>
+                    prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]
+                );
             };
 
             const totalPrice = () => {
-                return services.reduce((sum, id) => {
+                const main = services.reduce((sum, id) => {
                     const svc = SERVICES.find(s => s.id === id);
                     return sum + (svc?.price || 0);
                 }, 0);
+                
+                const additional = additionalServices.reduce((sum, id) => {
+                    const svc = SERVICES.find(s => s.id === id);
+                    return sum + (svc?.price || 0);
+                }, 0);
+                
+                return main + additional;
             };
 
-            const exitTime = () => {
-                const now = new Date();
-                const mins = totalTime();
-                const exit = new Date(now.getTime() + mins * 60000);
-                return exit.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
-            };
-
-            const captureAfter = () => {
-                setPhotoMode('after');
-                inputRef.current?.click();
+            const totalTime = () => {
+                if (!startTime || !endTime) return 0;
+                return Math.round((endTime - startTime) / 60000);
             };
 
             const submit = () => {
                 const rcpt = {
-                    number: 'RCP-' + Date.now().toString().slice(-6),
+                    number: 'PRO-' + Date.now().toString().slice(-6),
                     date: new Date().toLocaleDateString('es-ES'),
-                    time: new Date().toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' }),
                     plate,
                     client: isNew ? form.name : client?.name,
                     vehicle: isNew ? form.vehicleModel : client?.vehicleModel,
-                    services: services.map(id => SERVICES.find(s => s.id === id)),
-                    totalTime: totalTime(),
-                    exitTime: exitTime(),
+                    center: center.name,
+                    services: [...services, ...additionalServices].map(id => SERVICES.find(s => s.id === id)),
+                    startTime: startTime.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' }),
+                    endTime: endTime.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' }),
+                    duration: totalTime(),
                     total: totalPrice(),
-                    operator: operator.name,
-                    company: company.name,
-                    beforePhotos,
-                    afterPhotos
+                    photoBefore,
+                    photoAfter
                 };
                 
                 setReceipt(rcpt);
@@ -970,81 +789,96 @@
             };
 
             const reset = () => {
-                setStage('camera');
-                setBeforePhotos([]);
-                setAfterPhotos([]);
-                setPhotoMode('before');
+                setStep('before');
+                setPhotoBefore(null);
+                setPhotoAfter(null);
                 setPlate(null);
                 setClient(null);
                 setIsNew(false);
                 setServices([]);
+                setAdditionalServices([]);
                 setForm({ name: '', phone: '', vehicleModel: '' });
+                setStartTime(null);
+                setEndTime(null);
                 setShowModal(false);
                 setReceipt(null);
             };
 
-            const now = () => {
-                return new Date().toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+            const exportData = () => {
+                const data = {
+                    center: center.name,
+                    stats,
+                    history,
+                    centerComparison,
+                    weekData,
+                    timestamp: new Date().toISOString()
+                };
+                
+                const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `carwash-premium-${Date.now()}.json`;
+                a.click();
+                URL.revokeObjectURL(url);
             };
+
+            const maxWeek = Math.max(...weekData.map(d => d.value));
 
             return (
                 <div className="app">
-                    <div className="header">
-                        <div className="brand">CarCare Elite</div>
-                        <div className="tagline">Premium Detailing Services</div>
-                        <div className="header-meta">
-                            <div className="location">
-                                <span>📍</span>
-                                <span>{company.name}</span>
-                            </div>
-                            <div className="operator">
-                                <span>{operator.name}</span>
-                                <div className="avatar">{operator.initials}</div>
-                            </div>
+                    <div className="top-bar">
+                        <div className="brand">🚗 CarWash</div>
+                        <div className="plan-badge">Premium</div>
+                        <div className="center-selector">
+                            <select 
+                                className="center-select"
+                                value={center.id}
+                                onChange={(e) => setCenter(CENTERS.find(c => c.id === parseInt(e.target.value)))}
+                            >
+                                {CENTERS.map(c => (
+                                    <option key={c.id} value={c.id}>{c.name}</option>
+                                ))}
+                            </select>
                         </div>
                     </div>
 
-                    <div className="nav">
-                        <button className={`nav-item ${tab === 'capture' ? 'active' : ''}`} onClick={() => setTab('capture')}>
+                    <div className="nav-tabs">
+                        <button className={`nav-tab ${tab === 'capture' ? 'active' : ''}`} onClick={() => setTab('capture')}>
                             Capturar
                         </button>
-                        <button className={`nav-item ${tab === 'history' ? 'active' : ''}`} onClick={() => setTab('history')}>
+                        <button className={`nav-tab ${tab === 'history' ? 'active' : ''}`} onClick={() => setTab('history')}>
                             Historial
                         </button>
-                        <button className={`nav-item ${tab === 'stats' ? 'active' : ''}`} onClick={() => setTab('stats')}>
-                            Métricas
+                        <button className={`nav-tab ${tab === 'analytics' ? 'active' : ''}`} onClick={() => setTab('analytics')}>
+                            Analytics
+                        </button>
+                        <button className={`nav-tab ${tab === 'comparison' ? 'active' : ''}`} onClick={() => setTab('comparison')}>
+                            Comparativa
                         </button>
                     </div>
 
-                    {tab === 'capture' && stage === 'camera' && (
-                        <div className="content">
-                            <div className="section-header">
-                                <h2 className="title">Nuevo Servicio</h2>
-                                <p className="subtitle">Captura el vehículo antes del servicio</p>
-                            </div>
+                    {tab === 'capture' && step === 'before' && (
+                        <div className="section">
+                            <h2 className="section-title">Foto Inicial</h2>
+                            <p className="section-subtitle">Captura el vehículo antes del servicio</p>
 
-                            <div className="camera-frame">
-                                <div className="camera-view">
-                                    {beforePhotos.length === 0 ? (
-                                        <div className="camera-placeholder">📷</div>
-                                    ) : (
+                            <div className="camera-container">
+                                <div className="camera-preview">
+                                    {!photoBefore && <div className="camera-icon">📷</div>}
+                                    {photoBefore && !scanning && (
                                         <>
-                                            <img src={beforePhotos[0]} alt="Before" className="preview-img" />
-                                            <div className="stage-badge">ANTES</div>
+                                            <img src={photoBefore} alt="Before" className="preview-image" />
+                                            <div className="image-label">ANTES</div>
                                         </>
                                     )}
-                                    {processing && (
-                                        <div className="processing-overlay">
+                                    {scanning && (
+                                        <div className="scan-overlay">
                                             <div className="spinner"></div>
-                                            <div className="process-text">ANALIZANDO MATRÍCULA</div>
+                                            <div className="scan-text">Analizando matrícula...</div>
                                         </div>
                                     )}
                                 </div>
-                                {beforePhotos.length === 0 && (
-                                    <div className="capture-controls">
-                                        <button className="shutter" onClick={handleShutter}></button>
-                                    </div>
-                                )}
                             </div>
 
                             <input 
@@ -1052,13 +886,21 @@
                                 type="file"
                                 accept="image/*"
                                 capture="environment"
-                                onChange={handleFileChange}
+                                onChange={handleFileSelect}
                                 style={{display: 'none'}}
                             />
 
-                            {beforePhotos.length > 0 && !processing && (
-                                <div className="actions">
-                                    <button className="button button-outline" onClick={() => setBeforePhotos([])}>
+                            {!photoBefore && (
+                                <div className="btn-group">
+                                    <button className="btn btn-primary" onClick={() => handleCapture('before')}>
+                                        📸 Tomar Foto
+                                    </button>
+                                </div>
+                            )}
+
+                            {photoBefore && !scanning && (
+                                <div className="btn-group">
+                                    <button className="btn btn-secondary" onClick={() => setPhotoBefore(null)}>
                                         Retomar
                                     </button>
                                 </div>
@@ -1066,73 +908,49 @@
                         </div>
                     )}
 
-                    {tab === 'capture' && stage === 'details' && (
-                        <div className="content">
-                            <div className={`result-card ${!isNew ? 'highlight' : ''}`}>
-                                <div className="result-header">
-                                    <div className="result-icon">{isNew ? '✨' : '✓'}</div>
-                                    <div>
-                                        <div className="result-label">
-                                            {isNew ? 'Nuevo Cliente' : 'Cliente Registrado'}
-                                        </div>
-                                    </div>
-                                </div>
+                    {tab === 'capture' && step === 'services' && (
+                        <div className="section">
+                            <div className={`detection-card ${isNew ? 'new' : 'success'}`}>
+                                <div className="license-plate">{plate}</div>
                                 
-                                <div className="plate-display">{plate}</div>
-
                                 {!isNew && client && (
-                                    <div className="info-grid">
-                                        <div className="info-item">
-                                            <span className="info-key">Cliente</span>
-                                            <span className="info-val">{client.name}</span>
+                                    <div>
+                                        <div className="info-row">
+                                            <span className="info-label">Cliente</span>
+                                            <span className="info-value">{client.name}</span>
                                         </div>
-                                        <div className="info-item">
-                                            <span className="info-key">Teléfono</span>
-                                            <span className="info-val">{client.phone}</span>
-                                        </div>
-                                        <div className="info-item">
-                                            <span className="info-key">Vehículo</span>
-                                            <span className="info-val">{client.vehicleModel}</span>
-                                        </div>
-                                        <div className="info-item">
-                                            <span className="info-key">Última visita</span>
-                                            <span className="info-val">{client.lastVisit}</span>
-                                        </div>
-                                        <div className="info-item">
-                                            <span className="info-key">Total visitas</span>
-                                            <span className="info-val">{client.totalVisits}</span>
+                                        <div className="info-row">
+                                            <span className="info-label">Vehículo</span>
+                                            <span className="info-value">{client.vehicleModel}</span>
                                         </div>
                                     </div>
                                 )}
 
                                 {isNew && (
                                     <div>
-                                        <div className="field">
-                                            <label className="field-label">Nombre del Cliente *</label>
+                                        <div className="form-group">
+                                            <label className="form-label">Nombre *</label>
                                             <input 
                                                 type="text"
-                                                className="field-input"
-                                                placeholder="Sr./Sra. Apellido"
+                                                className="form-input"
                                                 value={form.name}
                                                 onChange={(e) => setForm({...form, name: e.target.value})}
                                             />
                                         </div>
-                                        <div className="field">
-                                            <label className="field-label">Teléfono *</label>
+                                        <div className="form-group">
+                                            <label className="form-label">Teléfono *</label>
                                             <input 
                                                 type="tel"
-                                                className="field-input"
-                                                placeholder="+34 600 000 000"
+                                                className="form-input"
                                                 value={form.phone}
                                                 onChange={(e) => setForm({...form, phone: e.target.value})}
                                             />
                                         </div>
-                                        <div className="field">
-                                            <label className="field-label">Modelo del Vehículo</label>
+                                        <div className="form-group">
+                                            <label className="form-label">Vehículo</label>
                                             <input 
                                                 type="text"
-                                                className="field-input"
-                                                placeholder="Marca Modelo Año"
+                                                className="form-input"
                                                 value={form.vehicleModel}
                                                 onChange={(e) => setForm({...form, vehicleModel: e.target.value})}
                                             />
@@ -1141,117 +959,146 @@
                                 )}
                             </div>
 
-                            <div className="section-header">
-                                <h3 className="title">Servicios</h3>
-                                <p className="subtitle">Selecciona los tratamientos</p>
-                            </div>
+                            <h3 className="section-title">Servicios a Realizar</h3>
+                            <p className="section-subtitle">Selecciona los servicios iniciales</p>
 
-                            <div className="services">
+                            <div className="services-grid">
                                 {SERVICES.map(svc => (
                                     <div 
                                         key={svc.id}
-                                        className={`service ${services.includes(svc.id) ? 'chosen' : ''}`}
+                                        className={`service-card ${services.includes(svc.id) ? 'selected' : ''}`}
                                         onClick={() => toggleService(svc.id)}
                                     >
-                                        <div className="service-symbol">{svc.icon}</div>
-                                        <div className="service-title">{svc.name}</div>
-                                        <div className="service-details">
-                                            <span className="service-duration">{svc.duration}m</span>
-                                            <span className="service-cost">€{svc.price}</span>
+                                        <div className="service-icon">{svc.icon}</div>
+                                        <div className="service-name">{svc.name}</div>
+                                        <div className="service-meta">
+                                            <span className="service-time">{svc.duration}m</span>
+                                            <span className="service-price">€{svc.price}</span>
                                         </div>
                                     </div>
                                 ))}
                             </div>
 
-                            {services.length > 0 && (
-                                <div className="summary">
-                                    <div className="summary-line">
-                                        <span className="sum-key">Hora entrada</span>
-                                        <span className="sum-val">{now()}</span>
-                                    </div>
-                                    <div className="summary-line">
-                                        <span className="sum-key">Tiempo estimado</span>
-                                        <span className="sum-val">{totalTime()} min</span>
-                                    </div>
-                                    <div className="summary-line">
-                                        <span className="sum-key">Hora salida</span>
-                                        <span className="sum-val">{exitTime()}</span>
-                                    </div>
-                                    <div className="summary-line">
-                                        <span className="sum-key">Total</span>
-                                        <span className="sum-val">€{totalPrice()}</span>
-                                    </div>
-                                </div>
-                            )}
-
-                            {services.length > 0 && (
-                                <>
-                                    <div className="section-header">
-                                        <h3 className="title">Foto Final</h3>
-                                        <p className="subtitle">Captura el resultado</p>
-                                    </div>
-
-                                    <div className="camera-frame">
-                                        <div className="camera-view">
-                                            {afterPhotos.length === 0 ? (
-                                                <div className="camera-placeholder">📷</div>
-                                            ) : (
-                                                <>
-                                                    <img src={afterPhotos[0]} alt="After" className="preview-img" />
-                                                    <div className="stage-badge">DESPUÉS</div>
-                                                </>
-                                            )}
-                                        </div>
-                                        {afterPhotos.length === 0 && (
-                                            <div className="capture-controls">
-                                                <button className="shutter" onClick={captureAfter}></button>
-                                            </div>
-                                        )}
-                                    </div>
-                                </>
-                            )}
-
-                            <div className="fixed-bottom">
-                                <div className="actions">
-                                    <button className="button button-outline" onClick={reset}>
+                            <div className="bottom-bar">
+                                <div className="btn-group">
+                                    <button className="btn btn-secondary" onClick={reset}>
                                         Cancelar
                                     </button>
                                     <button 
-                                        className="button button-primary"
-                                        onClick={submit}
-                                        disabled={
-                                            services.length === 0 ||
-                                            (isNew && (!form.name || !form.phone)) ||
-                                            afterPhotos.length === 0
-                                        }
+                                        className="btn btn-primary"
+                                        onClick={() => setStep('after')}
+                                        disabled={services.length === 0 || (isNew && !form.name)}
                                     >
-                                        Generar Recibo
+                                        Continuar
                                     </button>
                                 </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {tab === 'capture' && step === 'after' && (
+                        <div className="section">
+                            <h2 className="section-title">Foto Final</h2>
+                            <p className="section-subtitle">Captura el vehículo limpio</p>
+
+                            <div className="camera-container">
+                                <div className="camera-preview">
+                                    {!photoAfter && <div className="camera-icon">📷</div>}
+                                    {photoAfter && (
+                                        <>
+                                            <img src={photoAfter} alt="After" className="preview-image" />
+                                            <div className="image-label">DESPUÉS</div>
+                                        </>
+                                    )}
+                                </div>
+                            </div>
+
+                            {!photoAfter && (
+                                <div className="btn-group">
+                                    <button className="btn btn-primary" onClick={() => handleCapture('after')}>
+                                        📸 Tomar Foto
+                                    </button>
+                                </div>
+                            )}
+
+                            {photoAfter && (
+                                <div className="btn-group">
+                                    <button className="btn btn-secondary" onClick={() => setPhotoAfter(null)}>
+                                        Retomar
+                                    </button>
+                                </div>
+                            )}
+                        </div>
+                    )}
+
+                    {tab === 'capture' && step === 'additional' && (
+                        <div className="section">
+                            <h2 className="section-title">Servicios Adicionales</h2>
+                            <p className="section-subtitle">¿Se realizó algún servicio extra?</p>
+
+                            <div className="additional-services">
+                                <div className="additional-title">Opcionales</div>
+                                <div className="services-grid">
+                                    {SERVICES.filter(s => !services.includes(s.id)).map(svc => (
+                                        <div 
+                                            key={svc.id}
+                                            className={`service-card ${additionalServices.includes(svc.id) ? 'selected' : ''}`}
+                                            onClick={() => toggleAdditional(svc.id)}
+                                        >
+                                            <div className="service-icon">{svc.icon}</div>
+                                            <div className="service-name">{svc.name}</div>
+                                            <div className="service-meta">
+                                                <span className="service-price">€{svc.price}</span>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+
+                            <div className="summary-card">
+                                <div className="summary-row">
+                                    <span>Hora inicio</span>
+                                    <span>{startTime?.toLocaleTimeString('es-ES', {hour: '2-digit', minute: '2-digit'})}</span>
+                                </div>
+                                <div className="summary-row">
+                                    <span>Hora fin</span>
+                                    <span>{endTime?.toLocaleTimeString('es-ES', {hour: '2-digit', minute: '2-digit'})}</span>
+                                </div>
+                                <div className="summary-row">
+                                    <span>Duración real</span>
+                                    <span>{totalTime()} min</span>
+                                </div>
+                                <div className="summary-row">
+                                    <span>Total</span>
+                                    <span>€{totalPrice()}</span>
+                                </div>
+                            </div>
+
+                            <div className="bottom-bar">
+                                <button className="btn btn-primary" style={{width: '100%'}} onClick={submit}>
+                                    Generar Albarán
+                                </button>
                             </div>
                         </div>
                     )}
 
                     {tab === 'history' && (
-                        <div className="content">
-                            <div className="section-header">
-                                <h2 className="title">Historial</h2>
-                                <p className="subtitle">{records.length} servicios hoy</p>
-                            </div>
+                        <div className="section">
+                            <h2 className="section-title">Historial Detallado</h2>
+                            <p className="section-subtitle">{history.length} servicios hoy con operadores</p>
 
-                            <div className="timeline">
-                                {records.map(rec => (
-                                    <div key={rec.id} className="event">
-                                        <div className="event-top">
-                                            <div className="event-plate">{rec.plate}</div>
-                                            <div className="event-time">{rec.time}</div>
+                            <div className="history-list">
+                                {history.map(item => (
+                                    <div key={item.id} className="history-item">
+                                        <div className="history-header">
+                                            <div className="history-plate">{item.plate}</div>
+                                            <div className="history-time">{item.time}</div>
                                         </div>
-                                        <div className="event-services">
-                                            {rec.services.join(' · ')}
-                                        </div>
-                                        <div className="event-bottom">
-                                            <div className="event-operator">👤 {rec.operator}</div>
-                                            <div className="event-total">€{rec.amount}</div>
+                                        <div className="history-footer">
+                                            <div style={{fontSize: '12px', color: 'var(--text-light)'}}>
+                                                👤 {item.operator}
+                                            </div>
+                                            <div className="history-amount">€{item.amount}</div>
                                         </div>
                                     </div>
                                 ))}
@@ -1259,125 +1106,209 @@
                         </div>
                     )}
 
-                    {tab === 'stats' && (
-                        <div className="content">
-                            <div className="section-header">
-                                <h2 className="title">Métricas de Hoy</h2>
-                                <p className="subtitle">{company.name}</p>
+                    {tab === 'analytics' && (
+                        <div className="section">
+                            <h2 className="section-title">Analytics Avanzado</h2>
+                            <p className="section-subtitle">{center.name} - Datos en tiempo real</p>
+
+                            <div className="stats-grid">
+                                <div className="stat-card">
+                                    <div className="stat-label">Servicios Hoy</div>
+                                    <div className="stat-value">{stats.today}</div>
+                                    <div style={{fontSize: '12px', color: 'var(--success)', marginTop: '4px'}}>+15% vs ayer</div>
+                                </div>
+                                <div className="stat-card">
+                                    <div className="stat-label">Ingresos Hoy</div>
+                                    <div className="stat-value">€{stats.revenue}</div>
+                                    <div style={{fontSize: '12px', color: 'var(--success)', marginTop: '4px'}}>+22% vs ayer</div>
+                                </div>
+                                <div className="stat-card">
+                                    <div className="stat-label">Tiempo Medio</div>
+                                    <div className="stat-value">{stats.avgTime}m</div>
+                                    <div style={{fontSize: '12px', color: 'var(--success)', marginTop: '4px'}}>-8m vs ayer</div>
+                                </div>
+                                <div className="stat-card">
+                                    <div className="stat-label">Eficiencia</div>
+                                    <div className="stat-value">{stats.efficiency}%</div>
+                                    <div style={{fontSize: '12px', color: 'var(--success)', marginTop: '4px'}}>+5% vs ayer</div>
+                                </div>
                             </div>
 
-                            <div className="metrics">
-                                <div className="metric">
-                                    <div className="metric-tag">Completados</div>
-                                    <div className="metric-number">{stats.completed}</div>
-                                    <div className="metric-trend">+15% vs ayer</div>
+                            <div style={{background: 'white', border: '1px solid var(--border)', borderRadius: '12px', padding: '16px', marginBottom: '16px'}}>
+                                <div style={{fontSize: '14px', fontWeight: '600', marginBottom: '16px'}}>
+                                    📊 Servicios por Día (Semana)
                                 </div>
-                                <div className="metric">
-                                    <div className="metric-tag">Ingresos</div>
-                                    <div className="metric-number">€{stats.revenue}</div>
-                                    <div className="metric-trend">+22% vs ayer</div>
-                                </div>
-                                <div className="metric">
-                                    <div className="metric-tag">Tiempo Medio</div>
-                                    <div className="metric-number">{stats.avgTime}m</div>
-                                    <div className="metric-trend">-8m vs ayer</div>
-                                </div>
-                                <div className="metric">
-                                    <div className="metric-tag">Pendientes</div>
-                                    <div className="metric-number">{stats.pending}</div>
+                                <div style={{display: 'flex', alignItems: 'flex-end', gap: '8px', height: '120px', paddingTop: '30px', paddingBottom: '30px'}}>
+                                    {weekData.map(d => (
+                                        <div 
+                                            key={d.day}
+                                            style={{
+                                                flex: 1,
+                                                background: 'var(--primary-light)',
+                                                borderRadius: '4px 4px 0 0',
+                                                position: 'relative',
+                                                minHeight: '10px',
+                                                height: `${(d.value / maxWeek) * 100}%`
+                                            }}
+                                        >
+                                            <div style={{
+                                                position: 'absolute',
+                                                top: '-20px',
+                                                left: '50%',
+                                                transform: 'translateX(-50%)',
+                                                fontSize: '11px',
+                                                fontWeight: '600'
+                                            }}>
+                                                {d.value}
+                                            </div>
+                                            <div style={{
+                                                position: 'absolute',
+                                                bottom: '-24px',
+                                                left: '50%',
+                                                transform: 'translateX(-50%)',
+                                                fontSize: '10px',
+                                                color: 'var(--text-light)',
+                                                whiteSpace: 'nowrap'
+                                            }}>
+                                                {d.day}
+                                            </div>
+                                        </div>
+                                    ))}
                                 </div>
                             </div>
 
-                            <div className="section-header" style={{marginTop: '28px'}}>
-                                <h3 className="title">Top Servicios</h3>
+                            <div style={{background: 'linear-gradient(135deg, #E6F0FF, white)', border: '2px solid var(--primary)', borderRadius: '12px', padding: '16px', marginBottom: '16px'}}>
+                                <div style={{fontSize: '14px', fontWeight: '600', color: 'var(--primary-dark)', marginBottom: '10px'}}>
+                                    🔮 Predicción ML - Mañana
+                                </div>
+                                <div style={{fontSize: '32px', fontWeight: '700', fontFamily: "'Playfair Display', serif", color: 'var(--navy)'}}>
+                                    34 servicios
+                                </div>
+                                <div style={{fontSize: '13px', color: 'var(--text-light)', marginTop: '8px'}}>
+                                    Basado en análisis de patrones históricos
+                                </div>
                             </div>
-                            <div className="timeline">
-                                <div className="event">
-                                    <div className="event-top">
-                                        <div>💎 Pulido Cerámico</div>
-                                        <div className="event-total">28 servicios</div>
+
+                            <button 
+                                onClick={exportData}
+                                style={{
+                                    width: '100%',
+                                    padding: '14px',
+                                    background: 'var(--navy)',
+                                    color: 'white',
+                                    border: 'none',
+                                    borderRadius: '10px',
+                                    fontSize: '14px',
+                                    fontWeight: '600',
+                                    cursor: 'pointer'
+                                }}
+                            >
+                                📊 Exportar Datos Completos (JSON)
+                            </button>
+                        </div>
+                    )}
+
+                    {tab === 'comparison' && (
+                        <div className="section">
+                            <h2 className="section-title">Comparativa Multi-Centro</h2>
+                            <p className="section-subtitle">Ranking de rendimiento de red</p>
+
+                            <div style={{display: 'grid', gap: '12px', marginBottom: '16px'}}>
+                                {centerComparison.map(item => (
+                                    <div key={item.center} style={{background: 'white', border: '1px solid var(--border)', borderRadius: '10px', padding: '14px'}}>
+                                        <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px'}}>
+                                            <div style={{fontWeight: '600', fontSize: '15px'}}>{item.center}</div>
+                                            <div style={{background: item.rank === 1 ? 'var(--primary)' : 'var(--border)', color: item.rank === 1 ? 'white' : 'var(--text)', padding: '4px 10px', borderRadius: '12px', fontSize: '11px', fontWeight: '700'}}>
+                                                #{item.rank}
+                                            </div>
+                                        </div>
+                                        <div style={{display: 'flex', gap: '16px', fontSize: '13px'}}>
+                                            <div>
+                                                <div style={{fontSize: '11px', color: 'var(--text-light)'}}>Servicios</div>
+                                                <div style={{fontSize: '18px', fontWeight: '700'}}>{item.services}</div>
+                                            </div>
+                                            <div>
+                                                <div style={{fontSize: '11px', color: 'var(--text-light)'}}>Ingresos</div>
+                                                <div style={{fontSize: '18px', fontWeight: '700', color: 'var(--primary-dark)'}}>
+                                                    €{item.revenue}
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div style={{fontSize: '11px', color: 'var(--text-light)'}}>Promedio</div>
+                                                <div style={{fontSize: '18px', fontWeight: '700'}}>
+                                                    €{Math.round(item.revenue / item.services)}
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
+                                ))}
+                            </div>
+
+                            <div style={{background: 'linear-gradient(135deg, var(--primary-light), white)', border: '1px solid var(--primary)', borderRadius: '12px', padding: '16px'}}>
+                                <div style={{fontSize: '14px', fontWeight: '600', marginBottom: '10px'}}>
+                                    💡 Insights de Red
                                 </div>
-                                <div className="event">
-                                    <div className="event-top">
-                                        <div>🚿 Lavado Premium</div>
-                                        <div className="event-total">24 servicios</div>
-                                    </div>
-                                </div>
-                                <div className="event">
-                                    <div className="event-top">
-                                        <div>🧹 Interior Profundo</div>
-                                        <div className="event-total">19 servicios</div>
-                                    </div>
+                                <div style={{fontSize: '13px', color: 'var(--text-light)', lineHeight: '1.6'}}>
+                                    • Madrid lidera con {centerComparison[0].services} servicios<br/>
+                                    • Ticket promedio más alto: Madrid (€{Math.round(centerComparison[0].revenue / centerComparison[0].services)})<br/>
+                                    • Oportunidad de crecimiento: Valencia (+28% potencial)
                                 </div>
                             </div>
                         </div>
                     )}
 
                     {showModal && receipt && (
-                        <div className="overlay" onClick={reset}>
-                            <div className="dialog" onClick={(e) => e.stopPropagation()}>
-                                <div className="dialog-top">
-                                    <div className="success-badge">✓</div>
-                                    <h2 className="dialog-heading">Servicio Completado</h2>
-                                    <p className="dialog-desc">Recibo generado exitosamente</p>
+                        <div className="modal-overlay" onClick={reset}>
+                            <div className="modal" onClick={(e) => e.stopPropagation()}>
+                                <div className="modal-header">
+                                    <div className="modal-icon">✓</div>
+                                    <h2 className="modal-title">Albarán Generado</h2>
                                 </div>
 
-                                <div className="dialog-content">
-                                    <div className="receipt-code">
-                                        <div className="code-label">Nº de Recibo</div>
-                                        <div className="code-number">{receipt.number}</div>
+                                <div className="modal-body">
+                                    <div className="albaran-number">
+                                        <div className="albaran-code">{receipt.number}</div>
                                     </div>
 
-                                    <div className="receipt-details">
-                                        <div className="info-item">
-                                            <span className="info-key">Fecha</span>
-                                            <span className="info-val">{receipt.date} {receipt.time}</span>
+                                    <div>
+                                        <div className="info-row">
+                                            <span className="info-label">Matrícula</span>
+                                            <span className="info-value">{receipt.plate}</span>
                                         </div>
-                                        <div className="info-item">
-                                            <span className="info-key">Matrícula</span>
-                                            <span className="info-val">{receipt.plate}</span>
+                                        <div className="info-row">
+                                            <span className="info-label">Centro</span>
+                                            <span className="info-value">{receipt.center}</span>
                                         </div>
-                                        <div className="info-item">
-                                            <span className="info-key">Cliente</span>
-                                            <span className="info-val">{receipt.client}</span>
+                                        <div className="info-row">
+                                            <span className="info-label">Inicio</span>
+                                            <span className="info-value">{receipt.startTime}</span>
                                         </div>
-                                        <div className="info-item">
-                                            <span className="info-key">Vehículo</span>
-                                            <span className="info-val">{receipt.vehicle}</span>
+                                        <div className="info-row">
+                                            <span className="info-label">Fin</span>
+                                            <span className="info-value">{receipt.endTime}</span>
                                         </div>
-                                        <div className="info-item">
-                                            <span className="info-key">Operador</span>
-                                            <span className="info-val">{receipt.operator}</span>
+                                        <div className="info-row">
+                                            <span className="info-label">Duración</span>
+                                            <span className="info-value">{receipt.duration} min</span>
                                         </div>
-                                        <div className="info-item">
-                                            <span className="info-key">Sucursal</span>
-                                            <span className="info-val">{receipt.company}</span>
-                                        </div>
-                                        <div className="info-item">
-                                            <span className="info-key">Total</span>
-                                            <span className="info-val" style={{fontSize: '18px', color: 'var(--gold-dark)'}}>
-                                                €{receipt.total}
-                                            </span>
+                                        <div className="info-row">
+                                            <span className="info-label">Total</span>
+                                            <span className="info-value">€{receipt.total}</span>
                                         </div>
                                     </div>
 
-                                    <div className="photos">
-                                        {receipt.beforePhotos.map((p, i) => (
-                                            <div key={`b-${i}`} className="photo-box">
-                                                <img src={p} alt="Before" />
-                                                <div className="photo-tag">ANTES</div>
-                                            </div>
-                                        ))}
-                                        {receipt.afterPhotos.map((p, i) => (
-                                            <div key={`a-${i}`} className="photo-box">
-                                                <img src={p} alt="After" />
-                                                <div className="photo-tag">DESPUÉS</div>
-                                            </div>
-                                        ))}
+                                    <div className="photos-grid">
+                                        <div className="photo-preview">
+                                            <img src={receipt.photoBefore} alt="Before" />
+                                            <div className="photo-label">ANTES</div>
+                                        </div>
+                                        <div className="photo-preview">
+                                            <img src={receipt.photoAfter} alt="After" />
+                                            <div className="photo-label">DESPUÉS</div>
+                                        </div>
                                     </div>
 
-                                    <button className="button button-primary" style={{marginTop: '24px', width: '100%'}} onClick={reset}>
+                                    <button className="btn btn-primary" style={{marginTop: '16px', width: '100%'}} onClick={reset}>
                                         Nuevo Servicio
                                     </button>
                                 </div>

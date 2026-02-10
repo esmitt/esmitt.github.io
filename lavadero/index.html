@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema Lavadero - Selecciona Versión</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <title>CarWash - Selecciona tu Plan</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -34,7 +34,7 @@
         }
 
         .header h1 {
-            font-size: 36px;
+            font-size: 42px;
             margin-bottom: 12px;
             font-weight: 700;
         }
@@ -44,130 +44,160 @@
             opacity: 0.9;
         }
 
-        .versions {
+        .plans {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 24px;
             margin-bottom: 40px;
         }
 
-        .version-card {
+        .plan-card {
             background: white;
-            border-radius: 16px;
-            padding: 32px;
+            border-radius: 20px;
+            padding: 36px;
             text-decoration: none;
             color: inherit;
             transition: all 0.3s;
             box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+            position: relative;
+            overflow: hidden;
         }
 
-        .version-card:hover {
-            transform: translateY(-8px);
+        .plan-card:hover {
+            transform: translateY(-10px);
             box-shadow: 0 20px 60px rgba(0,0,0,0.25);
         }
 
-        .version-badge {
+        .plan-badge {
             display: inline-block;
-            padding: 6px 14px;
+            padding: 8px 16px;
             border-radius: 20px;
             font-size: 12px;
-            font-weight: 600;
+            font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 16px;
+            letter-spacing: 1.5px;
+            margin-bottom: 20px;
         }
 
-        .modern .version-badge {
+        .basic .plan-badge {
             background: #E6F0FF;
             color: #0066FF;
         }
 
-        .premium .version-badge {
+        .premium .plan-badge {
             background: #FFF8E1;
             color: #D4AF37;
         }
 
-        .version-title {
+        .premium::before {
+            content: '⭐';
+            position: absolute;
+            top: 20px;
+            right: 20px;
             font-size: 24px;
+        }
+
+        .plan-title {
+            font-size: 28px;
             font-weight: 700;
             margin-bottom: 12px;
         }
 
-        .version-description {
-            font-size: 14px;
-            color: #666;
-            line-height: 1.6;
-            margin-bottom: 20px;
+        .basic .plan-title {
+            color: #0066FF;
         }
 
-        .version-features {
-            list-style: none;
+        .premium .plan-title {
+            font-family: 'Playfair Display', serif;
+            color: #D4AF37;
+        }
+
+        .plan-price {
+            font-size: 14px;
+            color: #666;
             margin-bottom: 24px;
         }
 
-        .version-features li {
-            font-size: 13px;
-            color: #444;
-            margin-bottom: 8px;
-            padding-left: 24px;
-            position: relative;
+        .plan-features {
+            list-style: none;
+            margin-bottom: 28px;
         }
 
-        .version-features li::before {
+        .plan-features li {
+            font-size: 14px;
+            color: #444;
+            margin-bottom: 12px;
+            padding-left: 28px;
+            position: relative;
+            line-height: 1.5;
+        }
+
+        .plan-features li::before {
             content: '✓';
             position: absolute;
             left: 0;
             color: #4CAF50;
             font-weight: 700;
+            font-size: 16px;
         }
 
-        .version-button {
+        .plan-features .premium-only {
+            font-weight: 600;
+            color: #D4AF37;
+        }
+
+        .plan-button {
             display: block;
             width: 100%;
-            padding: 14px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+            padding: 16px;
             text-align: center;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 14px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 15px;
             transition: all 0.2s;
         }
 
-        .version-button:hover {
-            opacity: 0.9;
+        .basic .plan-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
         }
 
-        .premium .version-button {
+        .premium .plan-button {
             background: linear-gradient(135deg, #D4AF37 0%, #B8941F 100%);
+            color: white;
+        }
+
+        .plan-button:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
         }
 
         .info {
-            background: rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.15);
             backdrop-filter: blur(10px);
-            border-radius: 12px;
-            padding: 24px;
+            border-radius: 16px;
+            padding: 28px;
             color: white;
             text-align: center;
         }
 
         .info h3 {
-            font-size: 18px;
-            margin-bottom: 12px;
+            font-size: 20px;
+            margin-bottom: 14px;
         }
 
         .info p {
-            font-size: 14px;
-            opacity: 0.9;
-            line-height: 1.6;
+            font-size: 15px;
+            opacity: 0.95;
+            line-height: 1.7;
         }
 
         @media (max-width: 640px) {
             .header h1 {
-                font-size: 28px;
+                font-size: 32px;
             }
 
-            .versions {
+            .plans {
                 grid-template-columns: 1fr;
             }
         }
@@ -176,48 +206,57 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>🚗 Sistema Empresarial de Lavadero</h1>
-            <p>Selecciona la versión que mejor se adapte a tu marca</p>
+            <h1>🚗 CarWash Pro</h1>
+            <p>Sistema Profesional de Gestión Multi-Centro</p>
         </div>
 
-        <div class="versions">
-            <a href="index-modern.html" class="version-card modern">
-                <div class="version-badge">Corporativa</div>
-                <h2 class="version-title">Versión Moderna</h2>
-                <p class="version-description">
-                    Diseño clean y profesional con estética tech-forward. Ideal para cadenas modernas y empresas innovadoras.
-                </p>
-                <ul class="version-features">
-                    <li>Diseño corporativo limpio</li>
-                    <li>Azul profesional</li>
-                    <li>Interfaz intuitiva</li>
-                    <li>Optimizada para productividad</li>
+        <div class="plans">
+            <!-- Plan Básico -->
+            <a href="index-basic.html" class="plan-card basic">
+                <div class="plan-badge">Básico</div>
+                <h2 class="plan-title">Plan Esencial</h2>
+                <p class="plan-price">Ideal para operaciones simples</p>
+                <ul class="plan-features">
+                    <li>Captura antes/después desde cámara o galería</li>
+                    <li>Reconocimiento automático de matrícula</li>
+                    <li>Gestión de servicios y clientes</li>
+                    <li>Historial de servicios diarios</li>
+                    <li>Estadísticas básicas (servicios/ingresos)</li>
+                    <li>Multi-centro (Madrid, Barcelona, Valencia)</li>
+                    <li>Cálculo automático de duración real</li>
+                    <li>Servicios adicionales al finalizar</li>
                 </ul>
-                <div class="version-button">Ver Demo Moderna →</div>
+                <div class="plan-button">Acceder Plan Básico →</div>
             </a>
 
-            <a href="index-premium.html" class="version-card premium">
-                <div class="version-badge">Exclusiva</div>
-                <h2 class="version-title">Versión Premium</h2>
-                <p class="version-description">
-                    Estética elegante y sofisticada con toques de lujo. Perfecta para servicios de detailing de alta gama.
-                </p>
-                <ul class="version-features">
-                    <li>Diseño premium elegante</li>
-                    <li>Dorado y azul marino</li>
-                    <li>Tipografía sofisticada</li>
-                    <li>Experiencia de lujo</li>
+            <!-- Plan Premium -->
+            <a href="index-premium.html" class="plan-card premium">
+                <div class="plan-badge">Premium ⭐</div>
+                <h2 class="plan-title">Plan Executive</h2>
+                <p class="plan-price">Para gestión avanzada y decisiones data-driven</p>
+                <ul class="plan-features">
+                    <li><strong>Todo del Plan Básico +</strong></li>
+                    <li class="premium-only">📊 Analytics avanzado con 4 métricas clave</li>
+                    <li class="premium-only">📈 Gráfico de tendencias semanales</li>
+                    <li class="premium-only">🔮 Predicciones ML de demanda futura</li>
+                    <li class="premium-only">🏆 Comparativa multi-centro con ranking</li>
+                    <li class="premium-only">💡 Insights automáticos de red</li>
+                    <li class="premium-only">👥 Tracking por operador en historial</li>
+                    <li class="premium-only">📥 Exportación de datos (JSON)</li>
+                    <li class="premium-only">Diseño premium gold/navy</li>
                 </ul>
-                <div class="version-button">Ver Demo Premium →</div>
+                <div class="plan-button">Acceder Plan Premium →</div>
             </a>
         </div>
 
         <div class="info">
-            <h3>💡 Ambas versiones incluyen</h3>
+            <h3>✨ Funcionalidades Comunes</h3>
             <p>
-                Captura de fotos antes/después • Reconocimiento automático de matrículas • 
-                Dashboard de métricas • Gestión multi-sucursal • Generación de albaranes • 
-                UX optimizada para manos ocupadas
+                Ambas versiones incluyen: Captura fotos antes/después (cámara o galería) • 
+                OCR automático de matrículas • Gestión de clientes recurrentes • 
+                Selección multi-servicio • Cálculo de duración real • 
+                Servicios adicionales • Generación de albaranes • 
+                Soporte Madrid, Barcelona y Valencia
             </p>
         </div>
     </div>
