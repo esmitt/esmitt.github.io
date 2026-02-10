@@ -1,0 +1,1410 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>AutoWash Pro - Sistema Empresarial</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+        :root {
+            --primary: #0066FF;
+            --primary-dark: #0052CC;
+            --primary-light: #E6F0FF;
+            --success: #00C851;
+            --warning: #FF8800;
+            --danger: #FF4444;
+            --dark: #1A1D29;
+            --text: #2C3340;
+            --text-light: #6B7280;
+            --border: #E5E7EB;
+            --bg: #F9FAFB;
+            --white: #FFFFFF;
+            --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 6px rgba(0,0,0,0.07);
+            --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
+            --shadow-xl: 0 20px 25px rgba(0,0,0,0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .app {
+            max-width: 480px;
+            margin: 0 auto;
+            background: var(--white);
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Top Bar */
+        .top-bar {
+            background: var(--white);
+            border-bottom: 1px solid var(--border);
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .company-selector {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            color: var(--text);
+            font-weight: 500;
+        }
+
+        .company-badge {
+            background: var(--primary-light);
+            color: var(--primary);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: var(--text-light);
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        /* Navigation Tabs */
+        .nav-tabs {
+            background: var(--white);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            position: sticky;
+            top: 57px;
+            z-index: 99;
+        }
+
+        .nav-tab {
+            flex: 1;
+            padding: 14px 8px;
+            text-align: center;
+            border: none;
+            background: none;
+            color: var(--text-light);
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .nav-tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        /* Camera Section */
+        .section {
+            padding: 24px 20px;
+            padding-bottom: 100px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--text);
+        }
+
+        .section-subtitle {
+            font-size: 14px;
+            color: var(--text-light);
+            margin-bottom: 24px;
+        }
+
+        .camera-container {
+            position: relative;
+            border-radius: 16px;
+            overflow: hidden;
+            background: var(--dark);
+            margin-bottom: 20px;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .camera-preview {
+            width: 100%;
+            height: 280px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            background: linear-gradient(135deg, #1A1D29 0%, #2C3340 100%);
+        }
+
+        .camera-icon {
+            font-size: 56px;
+            opacity: 0.3;
+        }
+
+        .camera-controls {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 16px;
+        }
+
+        .capture-btn {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            border: 4px solid white;
+            background: var(--primary);
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 4px 12px rgba(0,102,255,0.4);
+        }
+
+        .capture-btn:active {
+            transform: scale(0.9);
+        }
+
+        .capture-btn.secondary {
+            width: 50px;
+            height: 50px;
+            background: rgba(255,255,255,0.2);
+            border-color: rgba(255,255,255,0.5);
+        }
+
+        .preview-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .image-label {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            backdrop-filter: blur(10px);
+        }
+
+        .scan-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .scan-animation {
+            width: 60px;
+            height: 60px;
+            border: 3px solid var(--primary);
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .scan-text {
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        /* Detection Result */
+        .detection-card {
+            background: white;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 20px;
+            animation: slideUp 0.3s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .detection-card.success {
+            border-color: var(--success);
+            background: linear-gradient(135deg, #F0FFF4 0%, #E6FFED 100%);
+        }
+
+        .detection-card.new {
+            border-color: var(--primary);
+            background: var(--primary-light);
+        }
+
+        .detection-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .detection-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            background: white;
+        }
+
+        .detection-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .license-plate {
+            background: white;
+            border: 3px solid var(--dark);
+            border-radius: 8px;
+            padding: 12px 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-align: center;
+            margin: 12px 0;
+            box-shadow: var(--shadow-md);
+        }
+
+        .client-details {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+        }
+
+        .detail-label {
+            color: var(--text-light);
+            font-weight: 500;
+        }
+
+        .detail-value {
+            color: var(--text);
+            font-weight: 600;
+            text-align: right;
+        }
+
+        /* Form Input */
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 6px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            font-size: 15px;
+            font-family: inherit;
+            transition: all 0.2s;
+            background: white;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-light);
+        }
+
+        /* Service Grid */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .service-card {
+            background: white;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .service-card:active {
+            transform: scale(0.97);
+        }
+
+        .service-card.selected {
+            border-color: var(--primary);
+            background: var(--primary-light);
+        }
+
+        .service-card.selected::after {
+            content: '✓';
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 24px;
+            height: 24px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .service-icon {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        .service-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 4px;
+        }
+
+        .service-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 8px;
+        }
+
+        .service-time {
+            font-size: 12px;
+            color: var(--text-light);
+        }
+
+        .service-price {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        /* Summary Card */
+        .summary-card {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .summary-row:last-child {
+            border-bottom: none;
+            padding-top: 16px;
+            margin-top: 8px;
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .summary-label {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .summary-value {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        /* Buttons */
+        .btn-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 16px 24px;
+            border: none;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-primary:active {
+            transform: translateY(1px);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-secondary {
+            background: var(--bg);
+            color: var(--text);
+            border: 2px solid var(--border);
+        }
+
+        /* Bottom Action Bar */
+        .bottom-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            border-top: 1px solid var(--border);
+            padding: 16px 20px;
+            box-shadow: 0 -4px 12px rgba(0,0,0,0.05);
+            max-width: 480px;
+            margin: 0 auto;
+        }
+
+        /* Dashboard */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 16px;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-light);
+            margin-bottom: 4px;
+            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .stat-change {
+            font-size: 12px;
+            color: var(--success);
+            margin-top: 4px;
+        }
+
+        /* History List */
+        .history-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .history-item {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 16px;
+        }
+
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .history-plate {
+            font-family: 'Courier New', monospace;
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .history-time {
+            font-size: 12px;
+            color: var(--text-light);
+        }
+
+        .history-services {
+            font-size: 13px;
+            color: var(--text-light);
+            margin-bottom: 8px;
+        }
+
+        .history-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .history-operator {
+            font-size: 13px;
+            color: var(--text-light);
+        }
+
+        .history-amount {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+
+        .modal {
+            background: white;
+            border-radius: 20px;
+            max-width: 400px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: modalSlide 0.3s ease-out;
+        }
+
+        @keyframes modalSlide {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-header {
+            padding: 24px;
+            border-bottom: 1px solid var(--border);
+            text-align: center;
+        }
+
+        .modal-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--success) 0%, #00A844 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            font-size: 32px;
+            animation: iconPop 0.4s ease-out;
+        }
+
+        @keyframes iconPop {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 8px;
+        }
+
+        .modal-subtitle {
+            font-size: 14px;
+            color: var(--text-light);
+        }
+
+        .modal-body {
+            padding: 24px;
+        }
+
+        .albaran-number {
+            background: var(--bg);
+            border: 2px dashed var(--border);
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .albaran-label {
+            font-size: 12px;
+            color: var(--text-light);
+            margin-bottom: 4px;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .albaran-code {
+            font-family: 'Courier New', monospace;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .modal-details {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .photos-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .photo-preview {
+            aspect-ratio: 4/3;
+            background: var(--bg);
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .photo-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .photo-label {
+            position: absolute;
+            bottom: 8px;
+            left: 8px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        /* Responsive */
+        @media (max-width: 380px) {
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
+
+        // MOCK DATA
+        const COMPANIES = [
+            { id: 1, name: 'Lavadero Central', location: 'Madrid Centro' },
+            { id: 2, name: 'Lavadero Norte', location: 'Las Tablas' },
+            { id: 3, name: 'Lavadero Sur', location: 'Getafe' }
+        ];
+
+        const MOCK_CLIENTS = {
+            'ABC123': {
+                name: 'Juan Pérez',
+                phone: '555-1234',
+                email: 'juan.perez@email.com',
+                vehicleModel: 'Toyota Corolla 2019',
+                lastVisit: '15/01/2026',
+                totalVisits: 12
+            },
+            'XYZ789': {
+                name: 'María González',
+                phone: '555-5678',
+                email: 'maria.g@email.com',
+                vehicleModel: 'Honda Civic 2021',
+                lastVisit: '20/01/2026',
+                totalVisits: 8
+            }
+        };
+
+        const SERVICES = [
+            { id: 1, name: 'Lavado Básico', duration: 30, price: 25, icon: '🚿' },
+            { id: 2, name: 'Aspirado Interior', duration: 45, price: 20, icon: '🧹' },
+            { id: 3, name: 'Aspirado Exterior', duration: 45, price: 15, icon: '💨' },
+            { id: 4, name: 'Limpieza Tapicería', duration: 60, price: 35, icon: '🧼' },
+            { id: 5, name: 'Pulido', duration: 90, price: 80, icon: '✨' },
+            { id: 6, name: 'Encerado', duration: 60, price: 50, icon: '🌟' }
+        ];
+
+        const DEMO_PLATES = Object.keys(MOCK_CLIENTS);
+
+        function App() {
+            const [currentCompany, setCurrentCompany] = useState(COMPANIES[0]);
+            const [currentUser] = useState({ name: 'Carlos M.', role: 'Operador' });
+            const [activeTab, setActiveTab] = useState('capture');
+            const [step, setStep] = useState('camera');
+            
+            // Camera states
+            const [photosBefore, setPhotosBefore] = useState([]);
+            const [photosAfter, setPhotosAfter] = useState([]);
+            const [currentPhotoType, setCurrentPhotoType] = useState('before');
+            const [scanning, setScanning] = useState(false);
+            
+            // Detection states
+            const [detectedPlate, setDetectedPlate] = useState(null);
+            const [clientData, setClientData] = useState(null);
+            const [isNewClient, setIsNewClient] = useState(false);
+            
+            // Form states
+            const [selectedServices, setSelectedServices] = useState([]);
+            const [newClientForm, setNewClientForm] = useState({
+                name: '',
+                phone: '',
+                vehicleModel: ''
+            });
+            
+            // Modal states
+            const [showSuccess, setShowSuccess] = useState(false);
+            const [albaranData, setAlbaranData] = useState(null);
+            
+            // Stats
+            const [todayStats] = useState({
+                completed: 23,
+                revenue: 1250,
+                avgTime: 52,
+                pending: 3
+            });
+
+            const [history] = useState([
+                {
+                    id: 1,
+                    plate: 'ABC123',
+                    time: '10:30',
+                    services: ['Lavado Básico', 'Aspirado Interior'],
+                    operator: 'Carlos M.',
+                    amount: 45
+                },
+                {
+                    id: 2,
+                    plate: 'XYZ789',
+                    time: '09:15',
+                    services: ['Lavado Completo', 'Pulido'],
+                    operator: 'Ana L.',
+                    amount: 105
+                }
+            ]);
+
+            const fileInputRef = useRef(null);
+
+            const handleCapture = () => {
+                fileInputRef.current?.click();
+            };
+
+            const handleFileSelect = (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    const imageData = event.target.result;
+                    
+                    if (currentPhotoType === 'before') {
+                        setPhotosBefore([imageData]);
+                        setScanning(true);
+                        
+                        // Simulate OCR
+                        setTimeout(() => {
+                            const randomPlate = Math.random() > 0.3 
+                                ? DEMO_PLATES[Math.floor(Math.random() * DEMO_PLATES.length)]
+                                : 'NEW' + Math.floor(Math.random() * 1000);
+                            
+                            setDetectedPlate(randomPlate);
+                            
+                            if (MOCK_CLIENTS[randomPlate]) {
+                                setClientData(MOCK_CLIENTS[randomPlate]);
+                                setIsNewClient(false);
+                            } else {
+                                setIsNewClient(true);
+                                setClientData(null);
+                            }
+                            
+                            setScanning(false);
+                            setStep('details');
+                        }, 2000);
+                    } else {
+                        setPhotosAfter([imageData]);
+                    }
+                };
+                reader.readAsDataURL(file);
+            };
+
+            const toggleService = (serviceId) => {
+                setSelectedServices(prev => 
+                    prev.includes(serviceId)
+                        ? prev.filter(id => id !== serviceId)
+                        : [...prev, serviceId]
+                );
+            };
+
+            const calculateTotalTime = () => {
+                return selectedServices.reduce((total, serviceId) => {
+                    const service = SERVICES.find(s => s.id === serviceId);
+                    return total + (service?.duration || 0);
+                }, 0);
+            };
+
+            const calculateTotalPrice = () => {
+                return selectedServices.reduce((total, serviceId) => {
+                    const service = SERVICES.find(s => s.id === serviceId);
+                    return total + (service?.price || 0);
+                }, 0);
+            };
+
+            const calculateExitTime = () => {
+                const now = new Date();
+                const totalMinutes = calculateTotalTime();
+                const exitTime = new Date(now.getTime() + totalMinutes * 60000);
+                return exitTime.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+            };
+
+            const handleCaptureAfter = () => {
+                setCurrentPhotoType('after');
+                fileInputRef.current?.click();
+            };
+
+            const handleSubmit = () => {
+                const albaran = {
+                    number: 'ALB-' + Date.now().toString().slice(-6),
+                    date: new Date().toLocaleDateString('es-ES'),
+                    time: new Date().toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' }),
+                    plate: detectedPlate,
+                    client: isNewClient ? newClientForm.name : clientData?.name,
+                    vehicle: isNewClient ? newClientForm.vehicleModel : clientData?.vehicleModel,
+                    services: selectedServices.map(id => SERVICES.find(s => s.id === id)),
+                    totalTime: calculateTotalTime(),
+                    exitTime: calculateExitTime(),
+                    total: calculateTotalPrice(),
+                    operator: currentUser.name,
+                    company: currentCompany.name,
+                    photosBefore,
+                    photosAfter
+                };
+                
+                setAlbaranData(albaran);
+                setShowSuccess(true);
+            };
+
+            const resetForm = () => {
+                setStep('camera');
+                setPhotosBefore([]);
+                setPhotosAfter([]);
+                setCurrentPhotoType('before');
+                setDetectedPlate(null);
+                setClientData(null);
+                setIsNewClient(false);
+                setSelectedServices([]);
+                setNewClientForm({ name: '', phone: '', vehicleModel: '' });
+                setShowSuccess(false);
+                setAlbaranData(null);
+            };
+
+            const getCurrentTime = () => {
+                return new Date().toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+            };
+
+            return (
+                <div className="app">
+                    {/* Top Bar */}
+                    <div className="top-bar">
+                        <div className="company-selector">
+                            <span>📍</span>
+                            <span className="company-badge">{currentCompany.name}</span>
+                        </div>
+                        <div className="user-info">
+                            <span>{currentUser.name}</span>
+                            <div className="user-avatar">{currentUser.name.charAt(0)}</div>
+                        </div>
+                    </div>
+
+                    {/* Navigation Tabs */}
+                    <div className="nav-tabs">
+                        <button 
+                            className={`nav-tab ${activeTab === 'capture' ? 'active' : ''}`}
+                            onClick={() => setActiveTab('capture')}
+                        >
+                            📸 Capturar
+                        </button>
+                        <button 
+                            className={`nav-tab ${activeTab === 'history' ? 'active' : ''}`}
+                            onClick={() => setActiveTab('history')}
+                        >
+                            📋 Historial
+                        </button>
+                        <button 
+                            className={`nav-tab ${activeTab === 'stats' ? 'active' : ''}`}
+                            onClick={() => setActiveTab('stats')}
+                        >
+                            📊 Estadísticas
+                        </button>
+                    </div>
+
+                    {/* Content */}
+                    {activeTab === 'capture' && step === 'camera' && (
+                        <div className="section">
+                            <h2 className="section-title">Nueva Limpieza</h2>
+                            <p className="section-subtitle">Captura la matrícula y el vehículo</p>
+
+                            <div className="camera-container">
+                                <div className="camera-preview">
+                                    {photosBefore.length === 0 ? (
+                                        <div className="camera-icon">📷</div>
+                                    ) : (
+                                        <>
+                                            <img src={photosBefore[0]} alt="Before" className="preview-image" />
+                                            <div className="image-label">ANTES</div>
+                                        </>
+                                    )}
+                                    {scanning && (
+                                        <div className="scan-overlay">
+                                            <div className="scan-animation"></div>
+                                            <div className="scan-text">Analizando matrícula...</div>
+                                        </div>
+                                    )}
+                                </div>
+                                {photosBefore.length === 0 && (
+                                    <div className="camera-controls">
+                                        <button className="capture-btn" onClick={handleCapture}></button>
+                                    </div>
+                                )}
+                            </div>
+
+                            <input 
+                                ref={fileInputRef}
+                                type="file" 
+                                accept="image/*" 
+                                capture="environment"
+                                onChange={handleFileSelect}
+                                style={{display: 'none'}}
+                            />
+
+                            {photosBefore.length > 0 && !scanning && (
+                                <div className="btn-group">
+                                    <button className="btn btn-secondary" onClick={() => setPhotosBefore([])}>
+                                        Retomar
+                                    </button>
+                                </div>
+                            )}
+                        </div>
+                    )}
+
+                    {activeTab === 'capture' && step === 'details' && (
+                        <div className="section">
+                            {/* Detection Result */}
+                            <div className={`detection-card ${isNewClient ? 'new' : 'success'}`}>
+                                <div className="detection-header">
+                                    <div className="detection-icon">
+                                        {isNewClient ? '✨' : '✓'}
+                                    </div>
+                                    <div className="detection-title">
+                                        {isNewClient ? 'Nuevo Cliente' : 'Cliente Recurrente'}
+                                    </div>
+                                </div>
+                                
+                                <div className="license-plate">{detectedPlate}</div>
+
+                                {!isNewClient && clientData && (
+                                    <div className="client-details">
+                                        <div className="detail-row">
+                                            <span className="detail-label">Cliente</span>
+                                            <span className="detail-value">{clientData.name}</span>
+                                        </div>
+                                        <div className="detail-row">
+                                            <span className="detail-label">Teléfono</span>
+                                            <span className="detail-value">{clientData.phone}</span>
+                                        </div>
+                                        <div className="detail-row">
+                                            <span className="detail-label">Vehículo</span>
+                                            <span className="detail-value">{clientData.vehicleModel}</span>
+                                        </div>
+                                        <div className="detail-row">
+                                            <span className="detail-label">Última visita</span>
+                                            <span className="detail-value">{clientData.lastVisit}</span>
+                                        </div>
+                                    </div>
+                                )}
+
+                                {isNewClient && (
+                                    <div style={{marginTop: '16px'}}>
+                                        <div className="form-group">
+                                            <label className="form-label">Nombre del Cliente *</label>
+                                            <input 
+                                                type="text"
+                                                className="form-input"
+                                                placeholder="Ej: Juan Pérez"
+                                                value={newClientForm.name}
+                                                onChange={(e) => setNewClientForm({...newClientForm, name: e.target.value})}
+                                            />
+                                        </div>
+                                        <div className="form-group">
+                                            <label className="form-label">Teléfono *</label>
+                                            <input 
+                                                type="tel"
+                                                className="form-input"
+                                                placeholder="Ej: 555-1234"
+                                                value={newClientForm.phone}
+                                                onChange={(e) => setNewClientForm({...newClientForm, phone: e.target.value})}
+                                            />
+                                        </div>
+                                        <div className="form-group">
+                                            <label className="form-label">Modelo del Vehículo</label>
+                                            <input 
+                                                type="text"
+                                                className="form-input"
+                                                placeholder="Ej: Toyota Corolla 2020"
+                                                value={newClientForm.vehicleModel}
+                                                onChange={(e) => setNewClientForm({...newClientForm, vehicleModel: e.target.value})}
+                                            />
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+
+                            {/* Services */}
+                            <h3 className="section-title">Servicios</h3>
+                            <p className="section-subtitle">Selecciona los servicios a realizar</p>
+
+                            <div className="services-grid">
+                                {SERVICES.map(service => (
+                                    <div 
+                                        key={service.id}
+                                        className={`service-card ${selectedServices.includes(service.id) ? 'selected' : ''}`}
+                                        onClick={() => toggleService(service.id)}
+                                    >
+                                        <div className="service-icon">{service.icon}</div>
+                                        <div className="service-name">{service.name}</div>
+                                        <div className="service-meta">
+                                            <span className="service-time">{service.duration}min</span>
+                                            <span className="service-price">€{service.price}</span>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+
+                            {/* Summary */}
+                            {selectedServices.length > 0 && (
+                                <div className="summary-card">
+                                    <div className="summary-row">
+                                        <span className="summary-label">Hora entrada</span>
+                                        <span className="summary-value">{getCurrentTime()}</span>
+                                    </div>
+                                    <div className="summary-row">
+                                        <span className="summary-label">Tiempo estimado</span>
+                                        <span className="summary-value">{calculateTotalTime()} min</span>
+                                    </div>
+                                    <div className="summary-row">
+                                        <span className="summary-label">Hora salida estimada</span>
+                                        <span className="summary-value">{calculateExitTime()}</span>
+                                    </div>
+                                    <div className="summary-row">
+                                        <span className="summary-label">Total</span>
+                                        <span className="summary-value">€{calculateTotalPrice()}</span>
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* After Photo */}
+                            {selectedServices.length > 0 && (
+                                <>
+                                    <h3 className="section-title">Foto Después</h3>
+                                    <p className="section-subtitle">Captura el vehículo limpio</p>
+
+                                    <div className="camera-container">
+                                        <div className="camera-preview">
+                                            {photosAfter.length === 0 ? (
+                                                <div className="camera-icon">📷</div>
+                                            ) : (
+                                                <>
+                                                    <img src={photosAfter[0]} alt="After" className="preview-image" />
+                                                    <div className="image-label">DESPUÉS</div>
+                                                </>
+                                            )}
+                                        </div>
+                                        {photosAfter.length === 0 && (
+                                            <div className="camera-controls">
+                                                <button className="capture-btn" onClick={handleCaptureAfter}></button>
+                                            </div>
+                                        )}
+                                    </div>
+                                </>
+                            )}
+
+                            {/* Bottom Actions */}
+                            <div className="bottom-bar">
+                                <div className="btn-group">
+                                    <button className="btn btn-secondary" onClick={resetForm}>
+                                        Cancelar
+                                    </button>
+                                    <button 
+                                        className="btn btn-primary"
+                                        onClick={handleSubmit}
+                                        disabled={
+                                            selectedServices.length === 0 || 
+                                            (isNewClient && (!newClientForm.name || !newClientForm.phone)) ||
+                                            photosAfter.length === 0
+                                        }
+                                    >
+                                        Generar Albarán
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* History Tab */}
+                    {activeTab === 'history' && (
+                        <div className="section">
+                            <h2 className="section-title">Historial de Hoy</h2>
+                            <p className="section-subtitle">{history.length} servicios completados</p>
+
+                            <div className="history-list">
+                                {history.map(item => (
+                                    <div key={item.id} className="history-item">
+                                        <div className="history-header">
+                                            <div className="history-plate">{item.plate}</div>
+                                            <div className="history-time">{item.time}</div>
+                                        </div>
+                                        <div className="history-services">
+                                            {item.services.join(' • ')}
+                                        </div>
+                                        <div className="history-footer">
+                                            <div className="history-operator">👤 {item.operator}</div>
+                                            <div className="history-amount">€{item.amount}</div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Stats Tab */}
+                    {activeTab === 'stats' && (
+                        <div className="section">
+                            <h2 className="section-title">Estadísticas de Hoy</h2>
+                            <p className="section-subtitle">{currentCompany.name}</p>
+
+                            <div className="stats-grid">
+                                <div className="stat-card">
+                                    <div className="stat-label">Completados</div>
+                                    <div className="stat-value">{todayStats.completed}</div>
+                                    <div className="stat-change">+12% vs ayer</div>
+                                </div>
+                                <div className="stat-card">
+                                    <div className="stat-label">Ingresos</div>
+                                    <div className="stat-value">€{todayStats.revenue}</div>
+                                    <div className="stat-change">+8% vs ayer</div>
+                                </div>
+                                <div className="stat-card">
+                                    <div className="stat-label">Tiempo Promedio</div>
+                                    <div className="stat-value">{todayStats.avgTime}min</div>
+                                    <div className="stat-change">-5min vs ayer</div>
+                                </div>
+                                <div className="stat-card">
+                                    <div className="stat-label">Pendientes</div>
+                                    <div className="stat-value">{todayStats.pending}</div>
+                                </div>
+                            </div>
+
+                            <h3 className="section-title" style={{marginTop: '24px'}}>Top Servicios</h3>
+                            <div className="history-list">
+                                <div className="history-item">
+                                    <div className="history-header">
+                                        <div>🚿 Lavado Básico</div>
+                                        <div className="history-amount">45 servicios</div>
+                                    </div>
+                                </div>
+                                <div className="history-item">
+                                    <div className="history-header">
+                                        <div>🧹 Aspirado Interior</div>
+                                        <div className="history-amount">32 servicios</div>
+                                    </div>
+                                </div>
+                                <div className="history-item">
+                                    <div className="history-header">
+                                        <div>✨ Pulido</div>
+                                        <div className="history-amount">18 servicios</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Success Modal */}
+                    {showSuccess && albaranData && (
+                        <div className="modal-overlay" onClick={resetForm}>
+                            <div className="modal" onClick={(e) => e.stopPropagation()}>
+                                <div className="modal-header">
+                                    <div className="modal-icon">✓</div>
+                                    <h2 className="modal-title">Albarán Generado</h2>
+                                    <p className="modal-subtitle">Servicio completado correctamente</p>
+                                </div>
+
+                                <div className="modal-body">
+                                    <div className="albaran-number">
+                                        <div className="albaran-label">Número de Albarán</div>
+                                        <div className="albaran-code">{albaranData.number}</div>
+                                    </div>
+
+                                    <div className="modal-details">
+                                        <div className="detail-row">
+                                            <span className="detail-label">Fecha</span>
+                                            <span className="detail-value">{albaranData.date} {albaranData.time}</span>
+                                        </div>
+                                        <div className="detail-row">
+                                            <span className="detail-label">Matrícula</span>
+                                            <span className="detail-value">{albaranData.plate}</span>
+                                        </div>
+                                        <div className="detail-row">
+                                            <span className="detail-label">Cliente</span>
+                                            <span className="detail-value">{albaranData.client}</span>
+                                        </div>
+                                        <div className="detail-row">
+                                            <span className="detail-label">Vehículo</span>
+                                            <span className="detail-value">{albaranData.vehicle}</span>
+                                        </div>
+                                        <div className="detail-row">
+                                            <span className="detail-label">Operador</span>
+                                            <span className="detail-value">{albaranData.operator}</span>
+                                        </div>
+                                        <div className="detail-row">
+                                            <span className="detail-label">Sucursal</span>
+                                            <span className="detail-value">{albaranData.company}</span>
+                                        </div>
+                                        <div className="detail-row">
+                                            <span className="detail-label">Total</span>
+                                            <span className="detail-value" style={{fontSize: '18px', color: 'var(--primary)'}}>
+                                                €{albaranData.total}
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <div className="photos-grid">
+                                        {albaranData.photosBefore.map((photo, idx) => (
+                                            <div key={`before-${idx}`} className="photo-preview">
+                                                <img src={photo} alt="Before" />
+                                                <div className="photo-label">ANTES</div>
+                                            </div>
+                                        ))}
+                                        {albaranData.photosAfter.map((photo, idx) => (
+                                            <div key={`after-${idx}`} className="photo-preview">
+                                                <img src={photo} alt="After" />
+                                                <div className="photo-label">DESPUÉS</div>
+                                            </div>
+                                        ))}
+                                    </div>
+
+                                    <button className="btn btn-primary" style={{marginTop: '20px', width: '100%'}} onClick={resetForm}>
+                                        Nuevo Servicio
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            );
+        }
+
+        ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+</body>
+</html>
