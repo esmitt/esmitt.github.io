@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CarWash Premium - Multi-Centro</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: sans-serif; background: #f5f5f5; }
+        .app { max-width: 480px; margin: 0 auto; background: white; min-height: 100vh; padding-bottom: 60px; }
+        .header { background: #D4AF37; color: #0A1128; padding: 20px; text-align: center; }
+        h1 { font-size: 24px; margin-bottom: 8px; }
+        .tabs { display: flex; background: white; border-bottom: 2px solid #eee; position: sticky; top: 0; z-index: 10; }
+        .tab { flex: 1; padding: 14px; border: none; background: none; cursor: pointer; color: #666; border-bottom: 3px solid transparent; }
+        .tab.active { color: #D4AF37; border-bottom-color: #D4AF37; font-weight: 600; }
+        .section { padding: 20px; display: none; }
+        .section.active { display: block; }
+        .btn { width: 100%; padding: 14px; border: none; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; margin: 10px 0; }
+        .btn-primary { background: #D4AF37; color: #0A1128; }
+        .btn-secondary { background: #f5f5f5; color: #333; }
+        .camera { background: #000; height: 280px; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #0A1128; font-size: 48px; margin: 16px 0; position: relative; }
+        .camera img { width: 100%; height: 100%; object-fit: cover; border-radius: 12px; }
+        .label { position: absolute; top: 12px; left: 12px; background: rgba(0,0,0,0.7); color: #0A1128; padding: 6px 12px; border-radius: 6px; font-size: 11px; }
+        .card { background: #f9f9f9; border: 1px solid #ddd; border-radius: 8px; padding: 16px; margin: 12px 0; }
+        .plate { background: white; border: 3px solid #000; padding: 12px; font-family: monospace; font-size: 24px; text-align: center; letter-spacing: 3px; border-radius: 6px; margin: 12px 0; }
+        .services { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 16px 0; }
+        .service { border: 2px solid #ddd; border-radius: 8px; padding: 12px; text-align: center; cursor: pointer; }
+        .service.selected { border-color: #D4AF37; background: #FFF8E1; }
+        .service-icon { font-size: 28px; }
+        .service-name { font-size: 13px; font-weight: 600; margin: 6px 0; }
+        .service-price { font-size: 16px; font-weight: 700; color: #D4AF37; }
+        .summary { background: #D4AF37; color: #0A1128; border-radius: 8px; padding: 16px; margin: 16px 0; }
+        .summary-row { display: flex; justify-content: space-between; padding: 6px 0; }
+        .history-item { background: white; border: 1px solid #ddd; border-radius: 8px; padding: 14px; margin: 12px 0; cursor: pointer; }
+        .history-header { display: flex; justify-content: space-between; margin-bottom: 8px; }
+        .history-details { margin-top: 12px; padding-top: 12px; border-top: 1px solid #eee; display: none; }
+        .history-details.show { display: block; }
+        .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.8); display: none; align-items: center; justify-content: center; z-index: 1000; padding: 20px; }
+        .modal.show { display: flex; }
+        .modal-content { background: white; border-radius: 12px; max-width: 400px; width: 100%; max-height: 90vh; overflow-y: auto; }
+        .modal-header { padding: 24px; text-align: center; border-bottom: 1px solid #eee; }
+        .modal-body { padding: 20px; }
+        .photos { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 16px 0; }
+        .photo { aspect-ratio: 4/3; background: #f5f5f5; border-radius: 8px; overflow: hidden; position: relative; }
+        .photo img { width: 100%; height: 100%; object-fit: cover; }
+        .photo-tag { position: absolute; bottom: 8px; left: 8px; background: rgba(0,0,0,0.7); color: #0A1128; padding: 4px 8px; border-radius: 4px; font-size: 10px; }
+        input[type="file"] { display: none; }
+        .work { background: #FFF3CD; border: 2px solid #FFC107; border-radius: 8px; padding: 12px; margin: 8px 0; cursor: pointer; }
+        .work.active { border-color: #D4AF37; background: #FFF8E1; }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <div class="header">
+            <h1>🚗 CarWash Premium</h1>
+            <select id="center-select" style="background:rgba(255,255,255,0.2); border:1px solid rgba(255,255,255,0.3); color:#0A1128; padding:8px 12px; border-radius:6px; margin-top:8px; cursor:pointer;">
+                <option value="madrid">📍 Madrid Centro</option>
+                <option value="barcelona">📍 Barcelona Diagonal</option>
+                <option value="valencia">📍 Valencia Puerto</option>
+            </select>
+        </div>
+
+        <div class="tabs">
+            <button class="tab active" onclick="showTab('capture')">Capturar</button>
+            <button class="tab" onclick="showTab('history')">Historial</button>
+            <button class="tab" onclick="showTab('analytics')">Analytics</button>
+            <button class="tab" onclick="showTab('stats')">Estadísticas</button>
+        </div>
+
+        <div id="capture" class="section active">
+            <h2>Trabajos en Proceso</h2>
+            <p><span id="work-count">0</span> coches</p>
+            <div id="works"></div>
+            <button class="btn btn-primary" onclick="newWork()">+ Nuevo Coche</button>
+            <div id="current-work"></div>
+        </div>
+
+        <div id="history" class="section">
+            <h2>Historial</h2>
+            <p><span id="history-count">0</span> servicios</p>
+            <div id="history-list"></div>
+        </div>
+
+        <div id="analytics" class="section">
+            <h2>Analytics Avanzado</h2>
+            <div class="card">
+                <div>Servicios: <strong id="analytics-services">0</strong></div>
+                <div>Ingresos: <strong>€<span id="analytics-revenue">0</span></strong></div>
+                <div>Tiempo Medio: <strong><span id="analytics-avgtime">0</span> min</strong></div>
+                <div>Eficiencia: <strong>92%</strong></div>
+            </div>
+            <h3>Comparativa de Centros</h3>
+            <div id="center-comparison"></div>
+        </div>
+
+        <div id="stats" class="section">
+            <h2>Estadísticas Hoy</h2>
+            <div class="card">
+                <div>Servicios: <strong id="stat-services">0</strong></div>
+                <div>Ingresos: <strong>€<span id="stat-revenue">0</span></strong></div>
+            </div>
+            <h3>Tiempo Promedio por Servicio</h3>
+            <div id="avg-times"></div>
+        </div>
+
+        <div id="modal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div style="font-size: 40px; margin-bottom: 12px;">✓</div>
+                    <h2>Albarán Generado</h2>
+                </div>
+                <div class="modal-body" id="modal-body"></div>
+            </div>
+        </div>
+    </div>
+
+    <input type="file" id="file-input" accept="image/*">
+
+    <script>
+        const SERVICES = [
+            {id:1, name:'Lavado Básico', price:25, icon:'🚿'},
+            {id:2, name:'Aspirado', price:20, icon:'🧹'},
+            {id:3, name:'Exterior', price:15, icon:'💨'},
+            {id:4, name:'Tapicería', price:35, icon:'🧼'},
+            {id:5, name:'Pulido', price:80, icon:'✨'},
+            {id:6, name:'Encerado', price:50, icon:'🌟'}
+        ];
+
+        const CLIENTS = {
+            'ABC123': {name:'Juan Pérez', phone:'600123456', vehicle:'Toyota Corolla'},
+            'XYZ789': {name:'María González', phone:'610987654', vehicle:'Honda Civic'}
+        };
+
+        let works = [];
+        let currentId = null;
+        let history = [];
+        let stats = {services:0, revenue:0};
+        
+        let currentCenter = 'madrid';
+        let centerData = {
+            madrid: {works:[], history:[], stats:{services:0, revenue:0}},
+            barcelona: {works:[], history:[], stats:{services:0, revenue:0}},
+            valencia: {works:[], history:[], stats:{services:0, revenue:0}}
+        };
+
+        document.getElementById('center-select').onchange = function() {
+            // Guardar datos del centro actual
+            centerData[currentCenter] = {
+                works: [...works],
+                history: [...history],
+                stats: {...stats}
+            };
+            
+            // Cargar nuevo centro
+            currentCenter = this.value;
+            works = [...centerData[currentCenter].works];
+            history = [...centerData[currentCenter].history];
+            stats = {...centerData[currentCenter].stats};
+            currentId = null;
+            
+            renderWorks();
+            renderCurrent();
+            renderHistory();
+            updateStats();
+        };
+
+        function showTab(tab) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.getElementById(tab).classList.add('active');
+            event.target.classList.add('active');
+            if(tab==='stats') updateStats();
+            if(tab==='analytics') updateAnalytics();
+        }
+
+        function updateAnalytics() {
+            document.getElementById('analytics-services').textContent = stats.services;
+            document.getElementById('analytics-revenue').textContent = stats.revenue;
+            const avgTime = history.length > 0 ? Math.round(history.reduce((s,h) => s + h.duration, 0) / history.length) : 0;
+            document.getElementById('analytics-avgtime').textContent = avgTime;
+
+            const centers = [
+                {id:'madrid', name:'Madrid Centro'},
+                {id:'barcelona', name:'Barcelona Diagonal'},
+                {id:'valencia', name:'Valencia Puerto'}
+            ];
+
+            document.getElementById('center-comparison').innerHTML = centers.map((c, idx) => {
+                const data = centerData[c.id];
+                return `
+                    <div class="card">
+                        <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
+                            <strong>${c.name}</strong>
+                            <span style="background:${idx===0?'#D4AF37':'#f5f5f5'}; color:${idx===0?'#0A1128':'#666'}; padding:4px 10px; border-radius:12px; font-size:11px;">#${idx+1}</span>
+                        </div>
+                        <div style="display:flex; gap:16px;">
+                            <div><div style="font-size:11px; color:#666;">Servicios</div><div style="font-size:18px; font-weight:700;">${data.stats.services}</div></div>
+                            <div><div style="font-size:11px; color:#666;">Ingresos</div><div style="font-size:18px; font-weight:700; color:#D4AF37;">€${data.stats.revenue}</div></div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function newWork() {
+            const work = {
+                id: Date.now(),
+                step: 'before',
+                photoBefore: null,
+                photoAfter: null,
+                plate: null,
+                client: null,
+                isNew: false,
+                services: [],
+                additional: [],
+                form: {name:'',phone:'',vehicle:''},
+                startTime: null,
+                endTime: null
+            };
+            works.push(work);
+            currentId = work.id;
+            renderWorks();
+            renderCurrent();
+        }
+
+        function selectWork(id) {
+            currentId = id;
+            renderWorks();
+            renderCurrent();
+        }
+
+        function getWork() {
+            return works.find(w => w.id === currentId);
+        }
+
+        function updateWork(updates) {
+            works = works.map(w => w.id === currentId ? {...w, ...updates} : w);
+            renderWorks();
+            renderCurrent();
+        }
+
+        function renderWorks() {
+            const el = document.getElementById('works');
+            document.getElementById('work-count').textContent = works.length;
+            if(works.length === 0) {
+                el.innerHTML = '';
+                return;
+            }
+            el.innerHTML = works.map(w => `
+                <div class="work ${w.id===currentId?'active':''}" onclick="selectWork(${w.id})">
+                    <strong>${w.plate||'Procesando...'}</strong> - ${w.step}
+                </div>
+            `).join('');
+        }
+
+        function renderCurrent() {
+            const work = getWork();
+            const el = document.getElementById('current-work');
+            if(!work) {
+                el.innerHTML = '';
+                return;
+            }
+
+            if(work.step === 'before') {
+                el.innerHTML = `
+                    <h3 style="margin-top:20px;">Foto ANTES</h3>
+                    <div class="camera" id="before-preview">
+                        ${work.photoBefore ? `<img src="${work.photoBefore}"><div class="label">ANTES</div>` : '📷'}
+                    </div>
+                    <button class="btn btn-primary" onclick="takeBefore()">📸 Capturar / Galería</button>
+                `;
+            }
+            else if(work.step === 'services') {
+                el.innerHTML = `
+                    <div class="card">
+                        <div class="plate">${work.plate}</div>
+                        ${!work.isNew && work.client ? `
+                            <div><strong>Cliente:</strong> ${work.client.name}</div>
+                            <div><strong>Vehículo:</strong> ${work.client.vehicle}</div>
+                        ` : `
+                            <input type="text" placeholder="Nombre *" class="btn btn-secondary" id="name" value="${work.form.name}">
+                            <input type="text" placeholder="Teléfono *" class="btn btn-secondary" id="phone" value="${work.form.phone}">
+                            <input type="text" placeholder="Vehículo" class="btn btn-secondary" id="vehicle" value="${work.form.vehicle}">
+                        `}
+                    </div>
+                    <h3>Servicios</h3>
+                    <div class="services">
+                        ${SERVICES.map(s => `
+                            <div class="service ${work.services.includes(s.id)?'selected':''}" onclick="toggleService(${s.id})">
+                                <div class="service-icon">${s.icon}</div>
+                                <div class="service-name">${s.name}</div>
+                                <div class="service-price">€${s.price}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <button class="btn btn-primary" onclick="continueToAfter()" ${work.services.length===0?'disabled':''}>
+                        Continuar →
+                    </button>
+                `;
+                if(work.isNew) {
+                    ['name','phone','vehicle'].forEach(f => {
+                        const input = document.getElementById(f);
+                        if(input) input.oninput = (e) => {
+                            work.form[f] = e.target.value;
+                            works = works.map(w => w.id===currentId ? work : w);
+                        };
+                    });
+                }
+            }
+            else if(work.step === 'after') {
+                el.innerHTML = `
+                    <h3>Foto DESPUÉS</h3>
+                    <div class="camera">
+                        ${work.photoAfter ? `<img src="${work.photoAfter}"><div class="label">DESPUÉS</div>` : '📷'}
+                    </div>
+                    <button class="btn btn-primary" onclick="takeAfter()">📸 Capturar / Galería</button>
+                `;
+            }
+            else if(work.step === 'additional') {
+                const duration = Math.round((work.endTime - work.startTime)/60000);
+                const total = [...work.services, ...work.additional].reduce((s,id) => s + (SERVICES.find(x=>x.id===id)?.price||0), 0);
+                el.innerHTML = `
+                    <h3>Servicios Adicionales</h3>
+                    <div class="services">
+                        ${SERVICES.filter(s=>!work.services.includes(s.id)).map(s => `
+                            <div class="service ${work.additional.includes(s.id)?'selected':''}" onclick="toggleAdditional(${s.id})">
+                                <div class="service-icon">${s.icon}</div>
+                                <div class="service-name">${s.name}</div>
+                                <div class="service-price">€${s.price}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="summary">
+                        <div class="summary-row"><span>Duración</span><span>${duration} min</span></div>
+                        <div class="summary-row"><span>Total</span><span>€${total}</span></div>
+                    </div>
+                    <button class="btn btn-primary" onclick="generateAlbaran()">Generar Albarán ✓</button>
+                `;
+            }
+        }
+
+        function takeBefore() {
+            const input = document.getElementById('file-input');
+            input.onchange = (e) => {
+                const file = e.target.files[0];
+                if(!file) return;
+                const reader = new FileReader();
+                reader.onload = (ev) => {
+                    updateWork({photoBefore: ev.target.result, startTime: new Date()});
+                    setTimeout(() => {
+                        const plates = Object.keys(CLIENTS);
+                        const plate = Math.random()>0.3 ? plates[Math.floor(Math.random()*plates.length)] : 'NEW'+Math.floor(Math.random()*1000);
+                        if(CLIENTS[plate]) {
+                            updateWork({plate, client:CLIENTS[plate], isNew:false, step:'services'});
+                        } else {
+                            updateWork({plate, isNew:true, step:'services'});
+                        }
+                    }, 2000);
+                };
+                reader.readAsDataURL(file);
+            };
+            input.click();
+        }
+
+        function takeAfter() {
+            const input = document.getElementById('file-input');
+            input.onchange = (e) => {
+                const file = e.target.files[0];
+                if(!file) return;
+                const reader = new FileReader();
+                reader.onload = (ev) => {
+                    updateWork({photoAfter: ev.target.result, endTime: new Date(), step:'additional'});
+                };
+                reader.readAsDataURL(file);
+            };
+            input.click();
+        }
+
+        function toggleService(id) {
+            const work = getWork();
+            const services = work.services.includes(id) ? work.services.filter(s=>s!==id) : [...work.services, id];
+            updateWork({services});
+        }
+
+        function toggleAdditional(id) {
+            const work = getWork();
+            const additional = work.additional.includes(id) ? work.additional.filter(s=>s!==id) : [...work.additional, id];
+            updateWork({additional});
+        }
+
+        function continueToAfter() {
+            const work = getWork();
+            if(work.isNew && !work.form.name) {
+                alert('Completa el nombre');
+                return;
+            }
+            updateWork({step:'after'});
+        }
+
+        function generateAlbaran() {
+            const work = getWork();
+            const allServices = [...work.services, ...work.additional];
+            const duration = Math.round((work.endTime - work.startTime)/60000);
+            const total = allServices.reduce((s,id) => s + (SERVICES.find(x=>x.id===id)?.price||0), 0);
+
+            const receipt = {
+                number: 'PRO-' + Date.now().toString().slice(-6),
+                plate: work.plate,
+                duration,
+                total,
+                photoBefore: work.photoBefore,
+                photoAfter: work.photoAfter
+            };
+
+            history.unshift({
+                id: Date.now(),
+                plate: work.plate,
+                time: work.startTime.toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit'}),
+                duration,
+                services: allServices,
+                total,
+                expanded: false
+            });
+
+            stats.services++;
+            stats.revenue += total;
+
+            works = works.filter(w => w.id !== currentId);
+            currentId = null;
+            renderWorks();
+            renderCurrent();
+            renderHistory();
+            
+            showModal(receipt);
+        }
+
+        function showModal(receipt) {
+            document.getElementById('modal-body').innerHTML = `
+                <div style="background:#f5f5f5; border:2px dashed #D4AF37; border-radius:8px; padding:14px; text-align:center; margin-bottom:16px; font-family:monospace; font-size:20px; font-weight:700; color:#D4AF37;">
+                    ${receipt.number}
+                </div>
+                <div style="padding:6px 0;"><strong>Matrícula:</strong> ${receipt.plate}</div>
+                <div style="padding:6px 0;"><strong>Duración:</strong> ${receipt.duration} min</div>
+                <div style="padding:6px 0;"><strong>Total:</strong> €${receipt.total}</div>
+                <div class="photos">
+                    <div class="photo"><img src="${receipt.photoBefore}"><div class="photo-tag">ANTES</div></div>
+                    <div class="photo"><img src="${receipt.photoAfter}"><div class="photo-tag">DESPUÉS</div></div>
+                </div>
+                <button class="btn btn-primary" style="margin-top:16px;" onclick="closeModal()">Cerrar</button>
+            `;
+            document.getElementById('modal').classList.add('show');
+        }
+
+        function closeModal() {
+            document.getElementById('modal').classList.remove('show');
+        }
+
+        function renderHistory() {
+            document.getElementById('history-count').textContent = history.length;
+            document.getElementById('history-list').innerHTML = history.map(h => `
+                <div class="history-item" onclick="toggleHistory(${h.id})">
+                    <div class="history-header">
+                        <strong>${h.plate}</strong>
+                        <span>${h.time}</span>
+                    </div>
+                    <div style="display:flex; justify-content:space-between;">
+                        <span style="background:#FFF8E1; color:#D4AF37; padding:4px 8px; border-radius:4px; font-size:11px;">${h.duration} min</span>
+                        <strong style="color:#D4AF37; font-size:18px;">€${h.total}</strong>
+                    </div>
+                    <div class="history-details" id="details-${h.id}">
+                        <strong>Servicios:</strong><br>
+                        ${h.services.map(id => SERVICES.find(s=>s.id===id)?.name).join(', ')}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function toggleHistory(id) {
+            document.getElementById('details-'+id).classList.toggle('show');
+        }
+
+        function updateStats() {
+            document.getElementById('stat-services').textContent = stats.services;
+            document.getElementById('stat-revenue').textContent = stats.revenue;
+
+            const times = {};
+            const counts = {};
+            history.forEach(h => {
+                const avg = h.duration / h.services.length;
+                h.services.forEach(id => {
+                    times[id] = (times[id]||0) + avg;
+                    counts[id] = (counts[id]||0) + 1;
+                });
+            });
+
+            document.getElementById('avg-times').innerHTML = Object.keys(times).map(id => {
+                const svc = SERVICES.find(s => s.id === parseInt(id));
+                const avgTime = Math.round(times[id] / counts[id]);
+                return `<div class="card"><strong>${svc.name}:</strong> ${avgTime} min</div>`;
+            }).join('');
+        }
+
+        renderWorks();
+        renderHistory();
+        updateStats();
+    </script>
+</body>
+</html>
